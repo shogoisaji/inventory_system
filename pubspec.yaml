@@ -1,0 +1,31 @@
+name: flutter_test_various
+description: A new Flutter project.
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.0.5 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  intl:
+  go_router:
+  google_sign_in:
+  flutter_riverpod:
+  firebase_auth:
+  sqflite: any
+  path_provider: any
+  riverpod_annotation: ^2.1.1
+  firebase_core: ^2.15.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  build_runner:
+  riverpod_generator:
+
+
+flutter:
+  uses-material-design: true
