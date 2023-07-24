@@ -55,7 +55,7 @@ GoRouter router(RouterRef ref) {
 
     if (signedIn && page == PagePath.signIn) {
       // もうサインインしているのに サインイン画面を表示しようとしている --> ホーム画面へ
-      return PagePath.signIn;
+      return PagePath.warehousing;
     } else if (!signedIn) {
       // まだサインインしていない --> サインイン画面へ
       return PagePath.signIn;

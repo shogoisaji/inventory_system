@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../application/state/state.dart';
 import '../../infrastructure/firebase/auth_service.dart';
 import '../../infrastructure/firebase/testDB.dart';
 import '../theme/button_sytle.dart';
@@ -6,19 +8,22 @@ import '../theme/text_style.dart';
 import '../wedget/date_get.dart';
 import '../wedget/dropdown_category.dart';
 
-class WarehousingPage extends StatelessWidget {
+class WarehousingPage extends ConsumerWidget {
   final TextEditingController productController = TextEditingController();
   final TextEditingController idController = TextEditingController();
   final TextEditingController valueController = TextEditingController();
   String currentDate = getCurrentDate();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userProvider);
+    String email = user!.email!;
+    String username = email.split('@')[0];
     return Scaffold(
         appBar: AppBar(centerTitle: true, title: Text('入庫'), actions: [
           Center(
             child: Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Row(children: [
                   IconButton(
                       icon: const Icon(Icons.account_circle),
@@ -26,7 +31,7 @@ class WarehousingPage extends StatelessWidget {
                         final service = AuthService();
                         service.signOut();
                       }),
-                  Text("login_name")
+                  Text(username)
                 ])),
           )
         ]),

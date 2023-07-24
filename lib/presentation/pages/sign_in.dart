@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../infrastructure/firebase/auth_service.dart';
@@ -29,18 +30,55 @@ class SignInPage extends StatelessWidget {
           CustomTextField(
               label: "パスワード",
               onChangefunc: (newText) {
-                mailAddress = newText;
+                password = newText;
               },
               isPassword: true),
           ElevatedButton(
             onPressed: () async {
-              // サービスを呼び出す
-              final service = AuthService();
-              await service.signIn().catchError(
-                (e) {
-                  debugPrint('サインインできませんでした $e');
-                },
-              );
+              try {
+                if (mailAddress != null && password != null) {
+                  final service = AuthService();
+                  await service.signIn(mailAddress!, password!);
+                  // await service.signIn(mailAddress!, password!).catchError(
+                  //   (e) {
+                  //     debugPrint('サインインできませんでした $e');
+                  //   },
+                  // );
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text("空欄があります"),
+                        content: const Text("すべて記入してください"),
+                        actions: [
+                          TextButton(
+                            child: const Text("OK"),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+              } on FirebaseAuthException catch (e) {
+                debugPrint("signerror");
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text("sigh inに失敗しました"),
+                      content: const Text("ログイン情報を確認してください"),
+                      actions: [
+                        TextButton(
+                          child: const Text("OK"),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
             },
             style:
                 ElevatedButton.styleFrom(fixedSize: const Size.fromWidth(100)),
@@ -55,12 +93,30 @@ class SignInPage extends StatelessWidget {
           ElevatedButton(
             onPressed: () async {
               // サービスを呼び出す
-              final service = AuthService();
-              await service.signUp().catchError(
-                (e) {
-                  debugPrint('サインアップできませんでした $e');
-                },
-              );
+              if (mailAddress != null && password != null) {
+                final service = AuthService();
+                await service.signUp(mailAddress!, password!).catchError(
+                  (e) {
+                    debugPrint('サインアップできませんでした $e');
+                  },
+                );
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text("空欄があります"),
+                      content: const Text("すべて記入してください"),
+                      actions: [
+                        TextButton(
+                          child: const Text("OK"),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
             },
             style:
                 ElevatedButton.styleFrom(fixedSize: const Size.fromWidth(100)),

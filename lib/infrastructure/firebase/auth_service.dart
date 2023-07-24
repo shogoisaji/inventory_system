@@ -5,9 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 /// 通信の流れをまとめておくサービスクラス
 class AuthService {
   /// サインイン
-  Future<void> signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: 'mailaddress@gmail.com', password: 'password');
+  Future<void> signIn(String email, String password) async {
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
   }
 
   /// サインアウト
@@ -16,12 +16,12 @@ class AuthService {
   }
 
   /// サインアップ
-  Future<void> signUp() async {
+  Future<void> signUp(String email, String password) async {
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: 'mailAddress@gmail.com',
-        password: 'password',
+        email: email,
+        password: password,
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
