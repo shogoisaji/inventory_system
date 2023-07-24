@@ -5,9 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 /// 通信の流れをまとめておくサービスクラス
 class AuthService {
   /// サインイン
-  Future<void> signIn() async {
+  Future<void> signIn(String _email, String _password) async {
     await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: 'mailaddress@gmail.com', password: 'password');
+        email: _email, password: _password);
   }
 
   /// サインアウト

@@ -36,7 +36,7 @@ class SignInPage extends StatelessWidget {
             onPressed: () async {
               // サービスを呼び出す
               final service = AuthService();
-              await service.signIn().catchError(
+              await service.signIn(mailAddress, password).catchError(
                 (e) {
                   debugPrint('サインインできませんでした $e');
                 },
