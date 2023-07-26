@@ -6,6 +6,7 @@ import '../../application/state/state.dart';
 import '../pages/shipping_page.dart';
 import '../pages/sign_in.dart';
 import '../pages/stock_page.dart';
+import '../pages/stock_page.dart';
 import '../pages/warehousing_page.dart';
 part 'router.g.dart';
 
@@ -39,10 +40,10 @@ GoRouter router(RouterRef ref) {
         //   path: PagePath.warehousing,
         //   builder: (_, __) => ShippingPage(),
         // ),
-        // GoRoute(
-        //   path: PagePath.warehousing,
-        //   builder: (_, __) => StockPage(),
-        // ),
+        GoRoute(
+          path: PagePath.stock,
+          builder: (_, __) => StockPage(),
+        ),
       ],
     ),
   ];
@@ -55,7 +56,7 @@ GoRouter router(RouterRef ref) {
 
     if (signedIn && page == PagePath.signIn) {
       // もうサインインしているのに サインイン画面を表示しようとしている --> ホーム画面へ
-      return PagePath.warehousing;
+      return PagePath.stock;
     } else if (!signedIn) {
       // まだサインインしていない --> サインイン画面へ
       return PagePath.signIn;
