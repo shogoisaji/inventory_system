@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_various/presentation/pages/account_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -15,6 +16,7 @@ class PagePath {
   static const warehousing = '/warehousing';
   static const shipping = '/shipping';
   static const stock = '/stock';
+  static const account = '/account';
 }
 
 @riverpod
@@ -36,13 +38,17 @@ GoRouter router(RouterRef ref) {
           path: PagePath.warehousing,
           builder: (_, __) => WarehousingPage(),
         ),
-        // GoRoute(
-        //   path: PagePath.warehousing,
-        //   builder: (_, __) => ShippingPage(),
-        // ),
+        GoRoute(
+          path: PagePath.shipping,
+          builder: (_, __) => ShippingPage(),
+        ),
         GoRoute(
           path: PagePath.stock,
           builder: (_, __) => StockPage(),
+        ),
+        GoRoute(
+          path: PagePath.account,
+          builder: (_, __) => AccountPage(),
         ),
       ],
     ),
@@ -94,6 +100,15 @@ class MyApp extends ConsumerWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: router,
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          color: Color.fromARGB(255, 94, 100, 114),
+        ),
+        dialogTheme: const DialogTheme(
+          backgroundColor: Color.fromARGB(255, 255, 222, 222),
+        ),
+        scaffoldBackgroundColor: Color.fromARGB(255, 197, 197, 197),
+      ),
     );
   }
 }

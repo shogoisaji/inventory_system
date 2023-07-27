@@ -17,18 +17,20 @@ class CustomTextField extends StatelessWidget {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 500),
       child: Container(
+          padding: const EdgeInsets.all(10),
           child: TextField(
             onChanged: (newText) {
               onChangefunc(newText);
             },
             obscureText: isPassword ? true : false,
             decoration: InputDecoration(
+              fillColor: Colors.white,
+              filled: true,
               labelText: label,
-              border: OutlineInputBorder(
+              border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10))),
             ),
-          ),
-          padding: EdgeInsets.all(10)),
+          )),
     );
   }
 }

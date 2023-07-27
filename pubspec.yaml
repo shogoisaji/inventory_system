@@ -12,6 +12,7 @@ dependencies:
   intl:
   go_router:
   google_sign_in:
+  google_fonts:
   flutter_riverpod:
   firebase_auth:
   sqflite: any
@@ -30,3 +31,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - images/no_image.png

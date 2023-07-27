@@ -7,15 +7,14 @@ TextEditingController _controller = TextEditingController();
 @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.fromLTRB(50.0, 30.0, 50.0, 30.0),
       child: TextField(
         controller: _controller,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             border: OutlineInputBorder(),
             hintText: 'Enter your name',
           )
         ),
-      // margin: EdgeInsets.all(16.0),
-      padding: EdgeInsets.fromLTRB(200.0, 30.0, 200.0, 30.0),
     );
   }
 
