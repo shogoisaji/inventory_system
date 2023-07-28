@@ -7,7 +7,6 @@ import '../../application/state/state.dart';
 import '../pages/shipping_page.dart';
 import '../pages/sign_in.dart';
 import '../pages/stock_page.dart';
-import '../pages/stock_page.dart';
 import '../pages/warehousing_page.dart';
 part 'router.g.dart';
 
@@ -107,7 +106,7 @@ class MyApp extends ConsumerWidget {
         dialogTheme: const DialogTheme(
           backgroundColor: Color.fromARGB(255, 255, 222, 222),
         ),
-        scaffoldBackgroundColor: Color.fromARGB(255, 197, 197, 197),
+        scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
       ),
     );
   }

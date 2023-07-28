@@ -1,18 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test_various/infrastructure/firebase/firestore_service.dart';
 import 'package:go_router/go_router.dart';
 import '../../application/state/state.dart';
-import '../../infrastructure/firebase/auth_service.dart';
-import '../../infrastructure/firebase/testDB.dart';
-import '../theme/text_style.dart';
+import '../wedget/dropdown_category.dart';
+import '../wedget/dropdown_category.dart';
+import '../wedget/text_style.dart';
 import '../wedget/custom_bottun.dart';
 import '../wedget/date_get.dart';
-import '../wedget/dropdown_category.dart';
 
 class WarehousingPage extends ConsumerWidget {
-  final TextEditingController productController = TextEditingController();
-  final TextEditingController idController = TextEditingController();
-  final TextEditingController valueController = TextEditingController();
+  final TextEditingController productName = TextEditingController();
+  final TextEditingController productId = TextEditingController();
+  final TextEditingController productVolume = TextEditingController();
   String currentDate = getCurrentDate();
 
   @override
@@ -50,9 +51,9 @@ class WarehousingPage extends ConsumerWidget {
             ),
             Container(
               padding: EdgeInsets.only(top: 20),
-              width: 500,
+              width: 400,
               child: TextField(
-                controller: productController,
+                controller: productName,
                 decoration: const InputDecoration(
                   hintText: '商品名',
                   fillColor: Colors.white,
@@ -65,9 +66,9 @@ class WarehousingPage extends ConsumerWidget {
             ),
             Container(
               padding: EdgeInsets.only(top: 20),
-              width: 500,
+              width: 400,
               child: TextField(
-                controller: idController,
+                controller: productId,
                 decoration: const InputDecoration(
                   hintText: '商品ID',
                   fillColor: Colors.white,
@@ -78,12 +79,13 @@ class WarehousingPage extends ConsumerWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20,),
-            Text('カテゴリー',),
+            const SizedBox(height: 20,),
+            const Text('種類',),
             Container(
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  DropdownCategory(),
+                  const DropdownCategory(),
                   IconButton(
                     icon: const Icon(Icons.add_circle_outline),
                     onPressed: () {
@@ -91,14 +93,13 @@ class WarehousingPage extends ConsumerWidget {
                     },
                   ),
                 ],
-                mainAxisAlignment: MainAxisAlignment.center,
               ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 20),
-              width: 500,
+              padding: const EdgeInsets.only(top: 20),
+              width: 400,
               child: TextField(
-                controller: valueController,
+                controller: productVolume,
                 decoration: const InputDecoration(
                   hintText: '数量',
                   fillColor: Colors.white,
@@ -109,7 +110,7 @@ class WarehousingPage extends ConsumerWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             Text('日付'),
             Container(
               child: Text(currentDate,),
@@ -121,10 +122,29 @@ class WarehousingPage extends ConsumerWidget {
               child: Text(username),
               // padding: EdgeInsets.fromLTRB(200.0, 0.0, 200.0, 80.0),
             ),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             CustomButton(
-              onPressed: () {
-                debugPrint('登録完了');
+              onPressed:() async {
+                if (productName != null && productId != null && productVolume != null) {
+                  final service = FireStoreService();
+                  await service.upLoad(productName.text, productId.text, selectedValue, productVolume.text);
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text("空欄があります"),
+                        content: const Text("すべて記入してください"),
+                        actions: [
+                          TextButton(
+                            child: const Text("OK"),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }                
               },
               text: '入庫登録',
               mainColor: const Color.fromARGB(255, 255, 166, 158),

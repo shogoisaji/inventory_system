@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test_various/presentation/wedget/custom_bottun.dart';
 import 'package:go_router/go_router.dart';
 
-import '../theme/text_style.dart';
+import 'text_style.dart';
 import 'image_download.dart';
 
 class ListInner extends StatelessWidget {

@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../application/state/state.dart';
-import '../../infrastructure/firebase/auth_service.dart';
-import '../wedget/text_input.dart';
 
 
 class ShippingPage extends ConsumerWidget {
@@ -31,9 +29,7 @@ class ShippingPage extends ConsumerWidget {
       body: Center(
         child: Column(
           children: [
-            TextInput(),
-            TextInput(),
-            TextInput(),
+            
             ElevatedButton(
               onPressed: () {
                 return context.go('/stock');

@@ -20,6 +20,7 @@ dependencies:
   riverpod_annotation: ^2.1.1
   firebase_core: ^2.15.0
   firebase_storage:
+  cloud_firestore:
 
 dev_dependencies:
   flutter_test:
@@ -33,3 +34,10 @@ flutter:
   uses-material-design: true
   assets:
     - images/no_image.png
+    - images/inventory_top.png
+    - images/account_pass.png
+    - images/list_image1.png
+    - images/list_image2.png
+    - images/list_image3.png
+    - images/list_image4.png
+    - images/list_image5.png

@@ -4,9 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../application/state/state.dart';
 import '../../infrastructure/firebase/auth_service.dart';
-import '../theme/text_style.dart';
+import '../wedget/text_style.dart';
 import '../wedget/custom_bottun.dart';
-import '../wedget/text_input.dart';
 
 
 class AccountPage extends ConsumerWidget {

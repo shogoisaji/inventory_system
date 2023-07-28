@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/text_style.dart';
+import 'text_style.dart';
 
 class CustomButton extends StatelessWidget {
   double textSize;
