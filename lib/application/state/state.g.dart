@@ -78,4 +78,18 @@ final userIdProvider = AutoDisposeProvider<String>.internal(
 );
 
 typedef UserIdRef = AutoDisposeProviderRef<String>;
+String _$stockTypeHash() => r'd1defb54c091d09bd1684eb7a469420bc9033249';
+
+/// See also [StockType].
+@ProviderFor(StockType)
+final stockTypeProvider = AutoDisposeNotifierProvider<StockType, int>.internal(
+  StockType.new,
+  name: r'stockTypeProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$stockTypeHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$StockType = AutoDisposeNotifier<int>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

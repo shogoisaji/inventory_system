@@ -23,34 +23,29 @@ class WarehousingPage extends ConsumerWidget {
     String username = email.split('@')[0];
     return Scaffold(
         appBar: AppBar(
-        centerTitle: true,
-        title: BoldText(size:26, text:'入庫', color:Colors.white),
-        actions: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                children: [
-                IconButton(
-                  icon: const Icon(Icons.account_circle),
-                  onPressed: () {
-                    return context.go('/account');
-                  }
-                ),
-                Text(username)
-                ]
+            centerTitle: true,
+            title: BoldText(size: 26, text: '入庫', color: Colors.white),
+            actions: [
+              Center(
+                child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(children: [
+                      IconButton(
+                          icon: const Icon(Icons.account_circle),
+                          onPressed: () {
+                            return context.go('/account');
+                          }),
+                      Text(username)
+                    ])),
               )
-            ),
-          )
-        ]
-      ),
+            ]),
         body: Center(
           child: Column(children: [
             Container(
-              padding: EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
             ),
             Container(
-              padding: EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.only(top: 20),
               width: 400,
               child: TextField(
                 controller: productName,
@@ -79,8 +74,12 @@ class WarehousingPage extends ConsumerWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20,),
-            const Text('種類',),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              '種類',
+            ),
             Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -110,24 +109,37 @@ class WarehousingPage extends ConsumerWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             Text('日付'),
             Container(
-              child: Text(currentDate,),
+              child: Text(
+                currentDate,
+              ),
               // padding: EdgeInsets.fromLTRB(200.0, 0.0, 200.0, 30.0),
             ),
-            SizedBox(height: 20,),
-            Text('入庫者',),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              '入庫者',
+            ),
             Container(
               child: Text(username),
               // padding: EdgeInsets.fromLTRB(200.0, 0.0, 200.0, 80.0),
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             CustomButton(
-              onPressed:() async {
-                if (productName != null && productId != null && productVolume != null) {
+              onPressed: () async {
+                if (productName != null &&
+                    productId != null &&
+                    productVolume != null) {
                   final service = FireStoreService();
-                  await service.upLoad(productName.text, productId.text, selectedValue, productVolume.text);
+                  await service.upLoad(productName.text, productId.text,
+                      selectedType, productVolume.text);
                 } else {
                   showDialog(
                     context: context,
@@ -144,7 +156,7 @@ class WarehousingPage extends ConsumerWidget {
                       );
                     },
                   );
-                }                
+                }
               },
               text: '入庫登録',
               mainColor: const Color.fromARGB(255, 255, 166, 158),

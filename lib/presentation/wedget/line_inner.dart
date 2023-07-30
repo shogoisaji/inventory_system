@@ -9,9 +9,11 @@ import 'text_style.dart';
 import 'image_download.dart';
 
 class ListInner extends StatelessWidget {
-  ListInner({Key? key, required this.indexNumber}) : super(key: key);
+  ListInner({Key? key, required this.indexNumber, required this.stockType})
+      : super(key: key);
 
   final int indexNumber;
+  final int stockType;
 
   Future<String> loadImage() async {
     final ref = FirebaseStorage.instance.ref('images').child('bolt1.png');
@@ -19,8 +21,10 @@ class ListInner extends StatelessWidget {
     return url;
   }
 
-@override
+  @override
   Widget build(BuildContext context) {
+    final productName = '';
+    final productVolume = 0;
     return Container(
       width: 400,
       height: 90,
@@ -39,13 +43,19 @@ class ListInner extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const SizedBox(width: 10,),
+          const SizedBox(
+            width: 10,
+          ),
           const ImageDownload(),
-          const SizedBox(width: 10,),
+          const SizedBox(
+            width: 10,
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const SizedBox(height: 9,),
+              const SizedBox(
+                height: 9,
+              ),
               Expanded(
                 child: SizedBox(
                   width: 150,
@@ -64,54 +74,60 @@ class ListInner extends StatelessWidget {
                   borderRadius: BorderRadius.circular(7.0),
                   color: Color.fromARGB(255, 209, 209, 209),
                 ),
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      width: 45,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(7.0),
-                        color: Color.fromARGB(255, 135, 135, 135),
-                      ),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: NormalText(
-                          text: '総数',
-                          color: Colors.white,
-                          size: 15,
-                        ),
-                      ),
+                child: Stack(children: <Widget>[
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 45,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(7.0),
+                      color: Color.fromARGB(255, 135, 135, 135),
                     ),
-                    Container(
-                      padding: const EdgeInsets.only(left: 70.0),
-                      alignment: Alignment.centerLeft,
+                    child: Align(
+                      alignment: Alignment.center,
                       child: NormalText(
-                        text: '100',
-                        color: Colors.black,
-                        size: 20,
+                        text: '総数',
+                        color: Colors.white,
+                        size: 15,
                       ),
                     ),
-                  ]
-                ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 70.0),
+                    alignment: Alignment.centerLeft,
+                    child: NormalText(
+                      text: '100',
+                      color: Colors.black,
+                      size: 20,
+                    ),
+                  ),
+                ]),
               ),
-              const SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
             ],
           ),
-          const SizedBox(width: 10,),
-          CustomButton(text: '詳細',
+          const SizedBox(
+            width: 10,
+          ),
+          CustomButton(
+            text: '詳細',
             mainColor: Color.fromARGB(255, 174, 217, 224),
             shadowColor: Color.fromARGB(255, 0, 0, 0).withOpacity(0.2),
-            onPressed:()=>context.go('/shipping'),
+            onPressed: () => context.go('/shipping'),
             width: 60,
             height: 70,
             textSize: 20,
           ),
-          const SizedBox(width: 10,),
-          CustomButton(text: '出庫',
+          const SizedBox(
+            width: 10,
+          ),
+          CustomButton(
+            text: '出庫',
             mainColor: const Color.fromARGB(255, 255, 166, 158),
             shadowColor: Color.fromARGB(255, 0, 0, 0).withOpacity(0.2),
-            onPressed:()=>context.go('/shipping'),
+            onPressed: () => context.go('/shipping'),
             width: 60,
             height: 70,
             textSize: 20,

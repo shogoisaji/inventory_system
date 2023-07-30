@@ -1,9 +1,16 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 part 'state.g.dart';
+
+@riverpod
+class StockType extends _$StockType {
+  @override
+  int build() => 0;
+}
 
 ///
 /// FirebaseのユーザーをAsyncValue型で管理するプロバイダー
@@ -35,8 +42,6 @@ bool signedIn(SignedInRef ref) {
   final user = ref.watch(userProvider);
   return user != null;
 }
-
-/* スコープ内の画面からのみ使える */
 
 ///
 /// ユーザーID

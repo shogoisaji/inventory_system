@@ -12,33 +12,30 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            Stack(
-            children: [
-              Positioned(
-                child: Container(
-                  width: double.infinity,
-                  height: 450,
-                  color: Colors.red[200],
-                ),
+      body: ListView(children: [
+        Column(children: [
+          Stack(children: [
+            Positioned(
+              child: Container(
+                width: double.infinity,
+                height: 450,
+                color: Colors.red[200],
               ),
-              Positioned(
-                left: 50,
-                top: 30,
-                child: Container(
-                  width: 500,
-                  height: 500,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
+            ),
+            Positioned(
+              left: 50,
+              top: 30,
+              child: Container(
+                width: 500,
+                height: 500,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
                       image: AssetImage('images/inventory_top.png'),
-                      fit: BoxFit.cover
-                    ),
-                  ),
+                      fit: BoxFit.cover),
                 ),
               ),
-              Positioned(
+            ),
+            Positioned(
                 left: 0,
                 top: 420,
                 right: 0,
@@ -50,7 +47,7 @@ class SignInPage extends StatelessWidget {
                       topLeft: Radius.circular(25.0),
                       topRight: Radius.circular(25.0),
                     ),
-                    boxShadow:  [
+                    boxShadow: [
                       BoxShadow(
                         color: Color.fromARGB(130, 0, 0, 0),
                         offset: Offset(0, 0),
@@ -58,37 +55,36 @@ class SignInPage extends StatelessWidget {
                         spreadRadius: 3,
                       ),
                     ],
-                  ), 
-                )
-              ),
-              Positioned(
-                left: 15,
-                top: 10,
-                child: Column(
+                  ),
+                )),
+            Positioned(
+              left: 15,
+              top: 10,
+              child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TitleText(
                       text: 'Inventory',
-                        color: Colors.white,
-                        size: 46,
+                      color: Colors.white,
+                      size: 46,
                     ),
                     TitleText(
                       text: 'Management',
-                        color: Colors.white,
-                        size: 46,
+                      color: Colors.white,
+                      size: 46,
                     ),
                     TitleText(
                       text: 'System',
-                        color: Colors.white,
-                        size: 46,
+                      color: Colors.white,
+                      size: 46,
                     ),
-                  ]
-                ),
-              ),
-            ]
+                  ]),
+            ),
+          ]),
+          const SizedBox(
+            height: 15,
           ),
-            const SizedBox(height: 15,),
-            Container(
+          Container(
             constraints: const BoxConstraints(
               maxWidth: 450.0,
             ),
@@ -100,18 +96,15 @@ class SignInPage extends StatelessWidget {
               },
               decoration: const InputDecoration(
                 labelText: 'Email Address',
-                labelStyle: TextStyle(
-                  color: Colors.blueGrey
-                ),
+                labelStyle: TextStyle(color: Colors.blueGrey),
                 enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.blueGrey,
-                  )
-                ),
+                    borderSide: BorderSide(
+                  color: Colors.blueGrey,
+                )),
               ),
             ),
           ),
-            Container(
+          Container(
             constraints: const BoxConstraints(
               maxWidth: 450.0,
             ),
@@ -123,30 +116,83 @@ class SignInPage extends StatelessWidget {
                 password = text;
               },
               decoration: const InputDecoration(
-                labelText: 'password',
-                labelStyle: TextStyle(
-                  color: Colors.blueGrey
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
+                  labelText: 'password',
+                  labelStyle: TextStyle(color: Colors.blueGrey),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
                     color: Colors.blueGrey,
-                  )
-                )
-              ),
+                  ))),
             ),
           ),
-            const SizedBox(height: 30.0,),
-            CustomButton(text: 'ログイン',
-            mainColor: Color.fromARGB(255, 174, 217, 224),
-            shadowColor: Color.fromARGB(255, 45, 45, 45).withOpacity(0.2),
-            width: 150,
-            height: 50,
-            textSize: 20,
-            onPressed:() async {
-              try {
+          const SizedBox(
+            height: 30.0,
+          ),
+          CustomButton(
+              text: 'ログイン',
+              mainColor: Color.fromARGB(255, 174, 217, 224),
+              shadowColor: Color.fromARGB(255, 45, 45, 45).withOpacity(0.2),
+              width: 150,
+              height: 50,
+              textSize: 20,
+              onPressed: () async {
+                try {
+                  if (mailAddress != null && password != null) {
+                    final service = AuthService();
+                    await service.signIn(mailAddress!, password!);
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text("空欄があります"),
+                          content: const Text("すべて記入してください"),
+                          actions: [
+                            TextButton(
+                              child: const Text("OK"),
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                } on FirebaseAuthException catch (e) {
+                  debugPrint("signerror");
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text("ログインに失敗しました"),
+                        content: const Text("ログイン情報を確認してください"),
+                        actions: [
+                          TextButton(
+                            child: const Text("OK"),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+              }),
+          const SizedBox(
+            height: 20.0,
+          ),
+          CustomButton(
+              text: 'ユーザー登録',
+              mainColor: const Color.fromARGB(255, 255, 166, 158),
+              shadowColor: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.2),
+              width: 150,
+              height: 50,
+              textSize: 20,
+              onPressed: () async {
                 if (mailAddress != null && password != null) {
                   final service = AuthService();
-                  await service.signIn(mailAddress!, password!);
+                  await service.signUp(mailAddress!, password!).catchError(
+                    (e) {
+                      debugPrint('ユーザー登録できませんでした $e');
+                    },
+                  );
                 } else {
                   showDialog(
                     context: context,
@@ -164,62 +210,11 @@ class SignInPage extends StatelessWidget {
                     },
                   );
                 }
-              } on FirebaseAuthException catch (e) {
-                debugPrint("signerror");
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: const Text("ログインに失敗しました"),
-                      content: const Text("ログイン情報を確認してください"),
-                      actions: [
-                        TextButton(
-                          child: const Text("OK"),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              }
-            }
+              }),
+          const SizedBox(
+            height: 100,
           ),
-            const SizedBox(height: 20.0,),
-            CustomButton(text: 'ユーザー登録',
-            mainColor: const Color.fromARGB(255, 255, 166, 158),
-            shadowColor: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.2),
-            width: 150,
-            height: 50,
-            textSize: 20,
-            onPressed:() async {
-              if (mailAddress != null && password != null) {
-                final service = AuthService();
-                await service.signUp(mailAddress!, password!).catchError(
-                  (e) {
-                    debugPrint('ユーザー登録できませんでした $e');
-                  },
-                );
-              } else {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: const Text("空欄があります"),
-                      content: const Text("すべて記入してください"),
-                      actions: [
-                        TextButton(
-                          child: const Text("OK"),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              }
-            }
-          ),
-            const SizedBox(height: 100,),
-            ElevatedButton(
+          ElevatedButton(
             onPressed: () async {
               try {
                 final service = AuthService();
@@ -244,19 +239,19 @@ class SignInPage extends StatelessWidget {
               }
             },
             style: ElevatedButton.styleFrom(
-              fixedSize: const Size(200, 50), primary: Color.fromARGB(155, 255, 237, 187),
+                fixedSize: const Size(200, 50),
+                primary: Color.fromARGB(155, 255, 237, 187),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10) //こちらを適用
-                )
-            ),
+                    borderRadius: BorderRadius.circular(10) //こちらを適用
+                    )),
             child: const Text(
               'Sample Account',
-              style: TextStyle(fontSize: 20, color: Color.fromARGB(108, 0, 0, 0)),
+              style:
+                  TextStyle(fontSize: 20, color: Color.fromARGB(108, 0, 0, 0)),
             ),
           ),
-          ]
-        ),
-      ),
+        ]),
+      ]),
     );
   }
 }
