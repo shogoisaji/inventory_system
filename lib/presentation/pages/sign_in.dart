@@ -25,10 +25,10 @@ class SignInPage extends StatelessWidget {
             ),
             Positioned(
               left: 50,
-              top: 30,
+              top: 50,
               child: Container(
-                width: 500,
-                height: 500,
+                width: 450,
+                height: 450,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage('images/inventory_top.png'),
@@ -53,7 +53,7 @@ class SignInPage extends StatelessWidget {
                         color: Color.fromARGB(130, 0, 0, 0),
                         offset: Offset(0, 0),
                         blurRadius: 10,
-                        spreadRadius: 3,
+                        spreadRadius: 2,
                       ),
                     ],
                   ),
@@ -83,7 +83,7 @@ class SignInPage extends StatelessWidget {
             ),
           ]),
           const SizedBox(
-            height: 15,
+            height: 10,
           ),
           Container(
             constraints: const BoxConstraints(
@@ -158,7 +158,6 @@ class SignInPage extends StatelessWidget {
                     );
                   }
                 } on FirebaseAuthException catch (e) {
-                  debugPrint("signerror");
                   showDialog(
                     context: context,
                     builder: (context) {
@@ -294,7 +293,7 @@ class SignInPage extends StatelessWidget {
                     });
               }),
           const SizedBox(
-            height: 100,
+            height: 20,
           ),
           ElevatedButton(
             onPressed: () async {
@@ -321,7 +320,7 @@ class SignInPage extends StatelessWidget {
               }
             },
             style: ElevatedButton.styleFrom(
-                fixedSize: const Size(200, 50),
+                fixedSize: const Size(180, 40),
                 primary: Color.fromARGB(155, 255, 237, 187),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10) //こちらを適用
