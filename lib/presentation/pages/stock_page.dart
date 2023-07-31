@@ -7,7 +7,7 @@ import 'package:flutter_test_various/presentation/wedget/text_style.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../application/state/state.dart';
-import '../../infrastructure/firebase/firestore_service.dart';
+import '../../infrastructure/firebase/firebase_service.dart';
 import '../wedget/custom_bottun.dart';
 import '../wedget/image_download.dart';
 import '../wedget/line_inner.dart';

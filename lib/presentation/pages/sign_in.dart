@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_various/presentation/wedget/text_style.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../infrastructure/firebase/auth_service.dart';
 import '../wedget/custom_bottun.dart';
@@ -185,31 +186,112 @@ class SignInPage extends StatelessWidget {
               width: 150,
               height: 50,
               textSize: 20,
-              onPressed: () async {
-                if (mailAddress != null && password != null) {
-                  final service = AuthService();
-                  await service.signUp(mailAddress!, password!).catchError(
-                    (e) {
-                      debugPrint('ユーザー登録できませんでした $e');
-                    },
-                  );
-                } else {
-                  showDialog(
+              onPressed: () {
+                showDialog(
                     context: context,
-                    builder: (context) {
+                    builder: (BuildContext context) {
+                      TextEditingController _emailController =
+                          TextEditingController();
+                      TextEditingController _passwordController =
+                          TextEditingController();
+                      TextEditingController _nameController =
+                          TextEditingController();
+                      TextEditingController _departmentController =
+                          TextEditingController();
+
                       return AlertDialog(
-                        title: const Text("空欄があります"),
-                        content: const Text("すべて記入してください"),
-                        actions: [
+                        backgroundColor:
+                            const Color.fromARGB(255, 220, 239, 255),
+                        title: const Text('アカウント登録'),
+                        content: SingleChildScrollView(
+                          child: ListBody(
+                            children: <Widget>[
+                              Container(
+                                width: 400,
+                                child: TextField(
+                                  controller: _emailController,
+                                  decoration:
+                                      const InputDecoration(hintText: "Email"),
+                                ),
+                              ),
+                              const Text('必須',
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.red)),
+                              TextField(
+                                controller: _passwordController,
+                                decoration:
+                                    const InputDecoration(hintText: "Password"),
+                                obscureText: true,
+                              ),
+                              const Text('必須',
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.red)),
+                              TextField(
+                                controller: _nameController,
+                                decoration:
+                                    const InputDecoration(hintText: "Name"),
+                              ),
+                              const Text('必須',
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.red)),
+                              TextField(
+                                controller: _departmentController,
+                                decoration: const InputDecoration(
+                                    hintText: "Department"),
+                              ),
+                            ],
+                          ),
+                        ),
+                        actions: <Widget>[
                           TextButton(
-                            child: const Text("OK"),
-                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Cancel'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('登録'),
+                            onPressed: () async {
+                              if (_emailController.text.isEmpty ||
+                                  _passwordController.text.isEmpty ||
+                                  _nameController.text.isEmpty) {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('警告'),
+                                      content: const Text('必須項目は入力してください'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: const Text('OK'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              } else {
+                                // Handle the submission logic here
+                                AuthService authService = AuthService();
+                                var user = await authService.createUser(
+                                  _nameController.text,
+                                  _emailController.text,
+                                  _passwordController.text,
+                                  _departmentController.text,
+                                );
+                                if (user != null) {
+                                  print("User created successfully");
+                                } else {
+                                  print("Failed to create user");
+                                }
+                              }
+                            },
                           ),
                         ],
                       );
-                    },
-                  );
-                }
+                    });
               }),
           const SizedBox(
             height: 100,

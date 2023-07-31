@@ -103,9 +103,6 @@ class MyApp extends ConsumerWidget {
         appBarTheme: const AppBarTheme(
           color: Color.fromARGB(255, 94, 100, 114),
         ),
-        dialogTheme: const DialogTheme(
-          backgroundColor: Color.fromARGB(255, 255, 222, 222),
-        ),
         scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
       ),
     );
