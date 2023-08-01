@@ -33,7 +33,7 @@ class StockPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
     String email = user!.email!;
-    String username = email.split('@')[0];
+    // String username = ref.watch(userNameProvider);
 
     Future<List<DocumentSnapshot>> fetchFilteredData() async {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -42,6 +42,13 @@ class StockPage extends ConsumerWidget {
               isEqualTo: stockTypeList[ref.watch(stockTypeProvider)])
           .get();
       return querySnapshot.docs;
+    }
+
+    Stream<DocumentSnapshot> fetchUserData()  {
+      DocumentReference userRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(ref.watch(userIdProvider));
+      return  userRef.snapshots();
     }
 
     return Scaffold(
@@ -58,7 +65,19 @@ class StockPage extends ConsumerWidget {
                         onPressed: () {
                           return context.go('/account');
                         }),
-                    Text(username)
+                    // Text(username),
+                    StreamBuilder<DocumentSnapshot>(
+                    stream: fetchUserData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        DocumentSnapshot data = snapshot.data!;
+                        return Text(data['name']);
+                      }
+                    }),
                   ])),
             )
           ]),

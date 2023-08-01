@@ -137,7 +137,7 @@ class WarehousingPage extends ConsumerWidget {
                 if (productName != null &&
                     productId != null &&
                     productVolume != null) {
-                  final service = FireStoreService();
+                  final service = FirebaseService();
                   await service.upLoad(productName.text, productId.text,
                       selectedType, productVolume.text);
                 } else {

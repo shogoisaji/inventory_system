@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test_various/infrastructure/firebase/firebase_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../application/state/state.dart';
 import '../../infrastructure/firebase/auth_service.dart';
+import '../wedget/account_ditail_view.dart';
+import '../wedget/custom_bottunGradation.dart';
 import '../wedget/text_style.dart';
 import '../wedget/custom_bottun.dart';
 
@@ -16,7 +19,6 @@ class AccountPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
     String email = user!.email!;
-    String username = email.split('@')[0];
 
     Future<DocumentSnapshot> fetchUserData() async {
       DocumentReference userRef = FirebaseFirestore.instance
@@ -25,18 +27,12 @@ class AccountPage extends ConsumerWidget {
       return await userRef.get();
     }
 
+    // Future<String> fetchUserDataValues() async {
+    //   DocumentSnapshot snapshot = await fetchUserData();
+    //   return snapshot['name'];
+    // }
+
     return Scaffold(
-        // appBar: AppBar(centerTitle: true, title: Text('アカウント'), actions: [
-        //   Center(
-        //     child: Padding(
-        //         padding: const EdgeInsets.all(10.0),
-        //         child: Row(children: [
-        //           IconButton(
-        //               icon: const Icon(Icons.account_circle), onPressed: () {}),
-        //           Text(username)
-        //         ])),
-        //   )
-        // ]),
         body: ListView(children: [
       Column(children: [
         Stack(children: [
@@ -95,12 +91,73 @@ class AccountPage extends ConsumerWidget {
             ]),
           ),
         ]),
+        Container(
+          width: 300,
+          alignment: Alignment.bottomLeft,
+          child: 
+            const Text('Email',style:TextStyle(color: Colors.blueGrey,)),
+        ),
         Center(
             child: Column(
           children: [
+            // const SizedBox(height: 10),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(7.0),
+                color: Colors.blueGrey.withOpacity(0.3),
+              ),
+              width: 300,
+              height: 40,
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.only(left:10.0),
+              child:
+                Text(email)
+            ),
             const SizedBox(height: 10),
-            Text(
-              'Email : $email',
+            // AccountDitailView(
+            //   typeText: 'name',
+            // textWidget: fetchUserDataValues(),
+            
+            
+            // ),
+            Text(ref.watch(userNameProvider)),
+            const SizedBox(height: 10),
+            Container(
+              width: 300,
+              alignment: Alignment.bottomLeft,
+              child: 
+                const Text('部署',style:TextStyle(color: Colors.blueGrey,)),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(7.0),
+                color: Colors.blueGrey.withOpacity(0.3),
+              ),
+              width: 300,
+              height: 40,
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.only(left:10.0),
+              child:
+                Text(email)
+            ),
+            const SizedBox(height: 10),
+            Container(
+              width: 300,
+              alignment: Alignment.bottomLeft,
+              child: 
+                const Text('登録日',style:TextStyle(color: Colors.blueGrey,)),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(7.0),
+                color: Colors.blueGrey.withOpacity(0.3),
+              ),
+              width: 300,
+              height: 40,
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.only(left:10.0),
+              child:
+                Text(email)
             ),
             Column(
               children: [
@@ -125,29 +182,43 @@ class AccountPage extends ConsumerWidget {
                     }),
               ],
             ),
-            ElevatedButton(
+            const SizedBox(height: 20,),
+            CustomButtonGradation(
+              text: '在庫一覧',
+              mainColor1: Color.fromARGB(255, 94, 208, 161),
+              mainColor2: Color.fromARGB(255, 6, 100, 85),
+              borderColor1: Color.fromARGB(255, 222, 255, 195),
+              borderColor2: Color.fromARGB(255, 0, 100, 57),
               onPressed: () {
-                return context.go('/stock');
+                context.go('/stock');
               },
-              child: const Text('在庫一覧'),
+              width: 100,
+              height: 35,
+              textSize: 16,
+              textColor: Colors.white
             ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () async {},
-              child: const Text('log out'),
-            ),
-            const SizedBox(height: 30),
-            CustomButton(
+            const SizedBox(height: 20,),
+            CustomButtonGradation(
               text: 'ログアウト',
+              mainColor1: Color.fromARGB(255, 94, 132, 208),
+              mainColor2: Color.fromARGB(255, 57, 23, 144),
+              borderColor1: Color.fromARGB(255, 138, 164, 206),
+              borderColor2: Color.fromARGB(255, 0, 0, 0),
               onPressed: () {
                 final service = AuthService();
                 service.signOut();
               },
               width: 100,
-              height: 50,
-              mainColor: Colors.blue,
-              shadowColor: Colors.blue,
-            )
+              height: 35,
+              textSize: 16,
+              textColor: Colors.white
+            ),
+              // onPressed: () {
+              //   return context.go('/stock');
+              // },
+              // child: const Text('在庫一覧'),
+            
+            const SizedBox(height: 30),
           ],
         )),
       ]),

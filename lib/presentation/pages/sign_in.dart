@@ -82,9 +82,6 @@ class SignInPage extends StatelessWidget {
                   ]),
             ),
           ]),
-          const SizedBox(
-            height: 10,
-          ),
           Container(
             constraints: const BoxConstraints(
               maxWidth: 450.0,
@@ -126,7 +123,7 @@ class SignInPage extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 30.0,
+            height: 20.0,
           ),
           CustomButton(
               text: 'ログイン',
@@ -228,7 +225,7 @@ class SignInPage extends StatelessWidget {
                               TextField(
                                 controller: _nameController,
                                 decoration:
-                                    const InputDecoration(hintText: "Name"),
+                                    const InputDecoration(hintText: "名前"),
                               ),
                               const Text('必須',
                                   style: TextStyle(
@@ -236,20 +233,26 @@ class SignInPage extends StatelessWidget {
                               TextField(
                                 controller: _departmentController,
                                 decoration: const InputDecoration(
-                                    hintText: "Department"),
+                                    hintText: "部署"),
                               ),
                             ],
                           ),
                         ),
                         actions: <Widget>[
                           TextButton(
-                            child: const Text('Cancel'),
+                            child: const Text('Cancel',style:TextStyle(
+                              fontSize: 18,
+                              )),
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
                           ),
                           TextButton(
-                            child: const Text('登録'),
+                            child: const Text('登録',
+                            style:TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600
+                              )),
                             onPressed: () async {
                               if (_emailController.text.isEmpty ||
                                   _passwordController.text.isEmpty ||

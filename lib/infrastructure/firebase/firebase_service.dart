@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import '../../presentation/wedget/date_get.dart';
 
-class FireStoreService {
+class FirebaseService {
   final db = FirebaseFirestore.instance;
   String currentDate = getCurrentDate();
 
@@ -103,4 +104,16 @@ class FireStoreService {
   Future<String> imageUrlChack() {
     return FirebaseStorage.instance.ref('images/NoImage.png').getDownloadURL();
   }
+
+  Future<DocumentSnapshot> getDocument(
+    String collectionName,
+    String documentId,
+  ) async {
+    return await db
+        .collection(collectionName)
+        .doc(documentId)
+        .get();
+  }
+
+
 }
