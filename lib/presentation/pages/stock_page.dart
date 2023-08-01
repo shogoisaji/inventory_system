@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test_various/presentation/wedget/custom_bottun_circle.dart';
@@ -7,10 +6,7 @@ import 'package:flutter_test_various/presentation/wedget/text_style.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../application/state/state.dart';
-import '../../infrastructure/firebase/firebase_service.dart';
 import '../wedget/custom_bottun.dart';
-import '../wedget/image_download.dart';
-import '../wedget/line_inner.dart';
 
 class StockPage extends ConsumerWidget {
   StockPage({Key? key}) : super(key: key);
@@ -44,11 +40,11 @@ class StockPage extends ConsumerWidget {
       return querySnapshot.docs;
     }
 
-    Stream<DocumentSnapshot> fetchUserData()  {
+    Stream<DocumentSnapshot> fetchUserData() {
       DocumentReference userRef = FirebaseFirestore.instance
           .collection('users')
           .doc(ref.watch(userIdProvider));
-      return  userRef.snapshots();
+      return userRef.snapshots();
     }
 
     return Scaffold(
@@ -56,30 +52,35 @@ class StockPage extends ConsumerWidget {
           centerTitle: true,
           title: BoldText(size: 26, text: '在庫一覧', color: Colors.white),
           actions: [
-            Center(
-              child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(children: [
-                    IconButton(
-                        icon: const Icon(Icons.account_circle),
-                        onPressed: () {
-                          return context.go('/account');
-                        }),
-                    // Text(username),
-                    StreamBuilder<DocumentSnapshot>(
+            Row(children: [
+              IconButton(
+                  icon: const Icon(Icons.account_circle),
+                  onPressed: () {
+                    return context.go('/account');
+                  }),
+              // Text(username),
+              Container(
+                padding: const EdgeInsets.only(right: 8.0),
+                constraints: const BoxConstraints(
+                  maxWidth: 70,
+                ),
+                child: StreamBuilder<DocumentSnapshot>(
                     stream: fetchUserData(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       } else {
                         DocumentSnapshot data = snapshot.data!;
-                        return Text(data['name']);
+                        return Text(
+                          data['name'],
+                          overflow: TextOverflow.ellipsis,
+                        );
                       }
                     }),
-                  ])),
-            )
+              ),
+            ])
           ]),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
@@ -145,7 +146,7 @@ class StockPage extends ConsumerWidget {
         ),
         const SizedBox(height: 5),
         Expanded(
-            child: Container(
+            child: SizedBox(
           width: 400,
           height: double.infinity,
           child: Expanded(
@@ -153,7 +154,7 @@ class StockPage extends ConsumerWidget {
                 future: fetchFilteredData(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
@@ -172,11 +173,11 @@ class StockPage extends ConsumerWidget {
                           width: 400,
                           height: 90,
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 235, 235, 235),
+                            color: const Color.fromARGB(255, 235, 235, 235),
                             borderRadius: BorderRadius.circular(10.0),
                             boxShadow: [
                               BoxShadow(
-                                color: Color.fromARGB(255, 0, 0, 72)
+                                color: const Color.fromARGB(255, 0, 0, 72)
                                     .withOpacity(0.3),
                                 offset: const Offset(2, 2),
                                 blurRadius: 5,
@@ -228,7 +229,8 @@ class StockPage extends ConsumerWidget {
                                     height: 26,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(7.0),
-                                      color: Color.fromARGB(255, 209, 209, 209),
+                                      color: const Color.fromARGB(
+                                          255, 209, 209, 209),
                                     ),
                                     child: Stack(children: <Widget>[
                                       Container(
@@ -238,7 +240,7 @@ class StockPage extends ConsumerWidget {
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(7.0),
-                                          color: Color.fromARGB(
+                                          color: const Color.fromARGB(
                                               255, 135, 135, 135),
                                         ),
                                         child: Align(

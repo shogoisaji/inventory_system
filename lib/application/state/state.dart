@@ -51,30 +51,28 @@ String userId(UserIdRef ref) {
   throw 'スコープ内の画面でしか使えません';
 }
 
-@riverpod
-Stream<DocumentSnapshot<Map<String, dynamic>>?> userData(UserDataRef ref) {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final user = ref.watch(userProvider);
-  final userId = user?.uid;
+// @riverpod
+// Stream<DocumentSnapshot<Map<String, dynamic>>?> userData(UserDataRef ref) {
+//   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+//   final user = ref.watch(userProvider);
+//   final userId = user?.uid;
 
-  if(userId != null) {
-    return _firestore.collection('users').doc(userId).snapshots();
-  } else {
-    return Stream.value(null);
-  }
-}
+//   if(userId != null) {
+//     return _firestore.collection('users').doc(userId).snapshots();
+//   } else {
+//     return Stream.value(null);
+//   }
+// }
 
-@riverpod
-String userName(UserNameRef ref) {
-  final userData = ref.watch(userDataProvider);
-    return userData.when(
-      data: (d) => d!=null?d['userName']:"NoName",  
-      loading: () => 'loading', 
-      error: (_, __) => 'Error', 
-    );
-}
-
-
+// @riverpod
+// String userName(UserNameRef ref) {
+//   final userData = ref.watch(userDataProvider);
+//     return userData.when(
+//       data: (d) => d!=null?d['userName']:"NoName",
+//       loading: () => 'loading',
+//       error: (_, __) => 'Error',
+//     );
+// }
 
 /// ---------------------------------------------------------
 /// ユーザーIDを使えるスコープ    >> router/user_id_scope.dart

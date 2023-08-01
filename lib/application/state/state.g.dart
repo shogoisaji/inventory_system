@@ -78,36 +78,6 @@ final userIdProvider = AutoDisposeProvider<String>.internal(
 );
 
 typedef UserIdRef = AutoDisposeProviderRef<String>;
-String _$userDataHash() => r'4524271723e607bf90228ff7801c24f3a257c873';
-
-/// See also [userData].
-@ProviderFor(userData)
-final userDataProvider =
-    AutoDisposeStreamProvider<DocumentSnapshot<Map<String, dynamic>>>.internal(
-  userData,
-  name: r'userDataProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$userDataHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef UserDataRef
-    = AutoDisposeStreamProviderRef<DocumentSnapshot<Map<String, dynamic>>>;
-String _$userNameHash() => r'669125b1349fa1c2f17dea20f2c23e231f0f3151';
-
-/// See also [userName].
-@ProviderFor(userName)
-final userNameProvider = AutoDisposeProvider<String>.internal(
-  userName,
-  name: r'userNameProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$userNameHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef UserNameRef = AutoDisposeProviderRef<String>;
 String _$stockTypeHash() => r'd1defb54c091d09bd1684eb7a469420bc9033249';
 
 /// See also [StockType].
