@@ -92,4 +92,20 @@ final stockTypeProvider = AutoDisposeNotifierProvider<StockType, int>.internal(
 );
 
 typedef _$StockType = AutoDisposeNotifier<int>;
+String _$detailProductHash() => r'5f9b211b37d20f6a34a9aeabb75c8618419eb694';
+
+/// See also [DetailProduct].
+@ProviderFor(DetailProduct)
+final detailProductProvider =
+    AutoDisposeNotifierProvider<DetailProduct, String>.internal(
+  DetailProduct.new,
+  name: r'detailProductProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$detailProductHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$DetailProduct = AutoDisposeNotifier<String>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

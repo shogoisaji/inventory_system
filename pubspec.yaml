@@ -1,10 +1,10 @@
 name: flutter_test_various
 description: A new Flutter project.
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=3.0.5 <4.0.0'
+  sdk: ">=3.0.5 <4.0.0"
 
 dependencies:
   flutter:
@@ -22,6 +22,7 @@ dependencies:
   firebase_storage:
   cloud_firestore:
   image_picker:
+  get: ^4.6.5
 
 dev_dependencies:
   flutter_test:
@@ -29,7 +30,6 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   build_runner:
   riverpod_generator:
-
 
 flutter:
   uses-material-design: true
@@ -43,3 +43,4 @@ flutter:
     - images/list_image4.png
     - images/list_image5.png
     - images/Profiling_Isometric.png
+    - images/Logistics_Isometric.png

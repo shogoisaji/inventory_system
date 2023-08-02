@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -10,6 +9,12 @@ part 'state.g.dart';
 class StockType extends _$StockType {
   @override
   int build() => 0;
+}
+
+@riverpod
+class DetailProduct extends _$DetailProduct {
+  @override
+  String build() => 'none';
 }
 
 ///

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../application/state/state.dart';
+import '../pages/detail_page.dart';
 import '../pages/shipping_page.dart';
 import '../pages/sign_in.dart';
 import '../pages/stock_page.dart';
@@ -16,6 +17,7 @@ class PagePath {
   static const shipping = '/shipping';
   static const stock = '/stock';
   static const account = '/account';
+  static const detail = '/detail';
 }
 
 @riverpod
@@ -48,6 +50,10 @@ GoRouter router(RouterRef ref) {
         GoRoute(
           path: PagePath.account,
           builder: (_, __) => AccountPage(),
+        ),
+        GoRoute(
+          path: PagePath.detail,
+          builder: (_, __) => DetailPage(),
         ),
       ],
     ),

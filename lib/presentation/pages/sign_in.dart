@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_various/presentation/wedget/text_style.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../infrastructure/firebase/auth_service.dart';
 import '../wedget/custom_bottun.dart';
@@ -232,27 +231,26 @@ class SignInPage extends StatelessWidget {
                                       fontSize: 14, color: Colors.red)),
                               TextField(
                                 controller: _departmentController,
-                                decoration: const InputDecoration(
-                                    hintText: "部署"),
+                                decoration:
+                                    const InputDecoration(hintText: "部署"),
                               ),
                             ],
                           ),
                         ),
                         actions: <Widget>[
                           TextButton(
-                            child: const Text('Cancel',style:TextStyle(
-                              fontSize: 18,
-                              )),
+                            child: const Text('Cancel',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                )),
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
                           ),
                           TextButton(
                             child: const Text('登録',
-                            style:TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600
-                              )),
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w600)),
                             onPressed: () async {
                               if (_emailController.text.isEmpty ||
                                   _passwordController.text.isEmpty ||

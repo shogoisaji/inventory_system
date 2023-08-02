@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import '../../presentation/wedget/date_get.dart';
@@ -44,47 +43,34 @@ class FirebaseService {
     return downloadUrl;
   }
 
-  Future<void> upLoad(String productName, String productId, String productType,
-      String productVolume) async {
+  // Future<void> upLoad(String productName, String productId, String productType,
+  //     String productVolume) async {
+  //   int nextId = await incrementCounter();
+  //   await db.collection('items').doc('product$nextId').set({
+  //     'productName': productName,
+  //     'productId': nextId,
+  //     'productType': productType,
+  //     'productVolume': int.tryParse(productVolume),
+  //     'timeStamp': currentDate,
+  //   }); // imageトークンを入れるよ良い
+  // }
+
+// Firestoreにデータを保存する関数
+  Future<void> upLoad(String productName, String productType, int productVolume,
+      String userName, String? imageUrl) async {
     int nextId = await incrementCounter();
-    await db.collection('items').doc('product$nextId').set({
+    await FirebaseFirestore.instance
+        .collection('items')
+        .doc('product$nextId')
+        .set({
       'productName': productName,
       'productId': nextId,
       'productType': productType,
-      'productVolume': int.tryParse(productVolume),
-      'timeStamp': currentDate,
-    }); // imageトークンを入れるよ良い
-  }
-
-// Firestoreにデータを保存する関数
-  Future<void> saveData(
-      String productName,
-      String productId,
-      String productType,
-      String productVolume,
-      String userName,
-      String? imageUrl) async {
-    await FirebaseFirestore.instance.collection('items').doc('product').set({
-      'productName': productName,
-      'productType': productType,
       'productVolume': productVolume,
       'bankerName': userName,
-      'imageUrl': imageUrl
+      'imageUrl': imageUrl ?? "",
+      'timeStamp': currentDate
     });
-  }
-
-// 上記の関数を組み合わせて、画像をアップロードし、そのURLをFirestoreに保存する関数
-  Future<void> uploadAndSave(
-      File imageFile,
-      String path,
-      String productName,
-      String productId,
-      String productType,
-      String productVolume,
-      String userName) async {
-    String imageUrl = await uploadImage(imageFile, path);
-    saveData(
-        productName, productId, productType, productVolume, userName, imageUrl);
   }
 
   Future<File?> pickImage() async {
@@ -109,11 +95,19 @@ class FirebaseService {
     String collectionName,
     String documentId,
   ) async {
-    return await db
-        .collection(collectionName)
-        .doc(documentId)
-        .get();
+    return await db.collection(collectionName).doc(documentId).get();
   }
 
+  Future<void> valumeIncrement(String product, int incrementValue) async {
+    final docRef = FirebaseFirestore.instance.collection('items').doc(product);
 
+    FirebaseFirestore.instance.runTransaction((Transaction tx) async {
+      DocumentSnapshot doc = await tx.get(docRef);
+
+      if (doc.exists) {
+        int currentValue = doc.get('productValue');
+        tx.update(docRef, {'productValue': currentValue + incrementValue});
+      }
+    });
+  }
 }

@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 class AccountDetailView extends StatelessWidget {
   final String typeText;
   final String textContent;
+  final double width;
 
   AccountDetailView({
     Key? key,
+    this.width = 300,
     required this.typeText,
     required this.textContent,
   }) : super(key: key);
@@ -14,7 +16,7 @@ class AccountDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: [
       Container(
-        width: 300,
+        width: width,
         alignment: Alignment.bottomLeft,
         child: Text(typeText,
             style: const TextStyle(
@@ -26,7 +28,7 @@ class AccountDetailView extends StatelessWidget {
           borderRadius: BorderRadius.circular(7.0),
           color: Colors.blueGrey.withOpacity(0.3),
         ),
-        width: 300,
+        width: width,
         height: 40,
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.only(left: 15.0),

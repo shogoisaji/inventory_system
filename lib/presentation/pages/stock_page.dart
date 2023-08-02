@@ -11,11 +11,10 @@ import '../wedget/custom_bottun.dart';
 class StockPage extends ConsumerWidget {
   StockPage({Key? key}) : super(key: key);
 
-  final ScrollController _homeController = ScrollController();
   final String nullUrl =
       'https://firebasestorage.googleapis.com/v0/b/inventory-system-6bc22.appspot.com/o/images%2FNoImage.png?alt=media&token=95a23072-296e-4380-abd7-6dcb80ba647b';
 
-  var images = {
+  var typeList = {
     '部品': 'list_image1',
     '文房具': 'list_image2',
     '機器': 'list_image3',
@@ -23,19 +22,13 @@ class StockPage extends ConsumerWidget {
     '梱包材': 'list_image5'
   };
 
-  var stockTypeList = ['部品', '文房具', '機器', '消耗品', '梱包材'];
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider);
-    String email = user!.email!;
-    // String username = ref.watch(userNameProvider);
-
     Future<List<DocumentSnapshot>> fetchFilteredData() async {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('items')
           .where('productType',
-              isEqualTo: stockTypeList[ref.watch(stockTypeProvider)])
+              isEqualTo: typeList.keys.elementAt(ref.watch(stockTypeProvider)))
           .get();
       return querySnapshot.docs;
     }
@@ -112,7 +105,7 @@ class StockPage extends ConsumerWidget {
           padding: EdgeInsets.only(
               left: (MediaQuery.of(context).size.width) / 2 - 200),
           child: ListView.builder(
-            itemCount: images.length,
+            itemCount: typeList.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (_, index) {
               return Row(
@@ -129,10 +122,10 @@ class StockPage extends ConsumerWidget {
                           ref.read(stockTypeProvider.notifier).state = index;
                         },
                         assetName:
-                            "images/${images.values.elementAt(index)}.png",
+                            "images/${typeList.values.elementAt(index)}.png",
                       ),
                       NormalText(
-                          text: images.keys.elementAt(index),
+                          text: typeList.keys.elementAt(index),
                           size: 14,
                           color: index == ref.watch(stockTypeProvider)
                               ? Colors.black.withOpacity(1.0)
@@ -146,15 +139,12 @@ class StockPage extends ConsumerWidget {
         ),
         const SizedBox(height: 5),
         Expanded(
-            child: SizedBox(
-          width: 400,
-          height: double.infinity,
-          child: Expanded(
+          child: SizedBox(
             child: FutureBuilder<List<DocumentSnapshot>>(
                 future: fetchFilteredData(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
+                    return const CircularProgressIndicator(strokeWidth: 0.0);
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
@@ -170,7 +160,8 @@ class StockPage extends ConsumerWidget {
                         Map<String, dynamic> data =
                             docs[index].data() as Map<String, dynamic>;
                         return Container(
-                          width: 400,
+                          constraints: BoxConstraints(maxWidth: 400),
+                          // width: 400,
                           height: 90,
                           decoration: BoxDecoration(
                             color: const Color.fromARGB(255, 235, 235, 235),
@@ -191,7 +182,6 @@ class StockPage extends ConsumerWidget {
                               const SizedBox(
                                 width: 10,
                               ),
-                              // ImageDownload(imageUrl: data['productUrl']),
                               Container(
                                 height: 70,
                                 width: 70,
@@ -199,7 +189,11 @@ class StockPage extends ConsumerWidget {
                                   borderRadius: BorderRadius.circular(10.0),
                                   image: DecorationImage(
                                       image: NetworkImage(
-                                          data['productUrl'] ?? nullUrl),
+                                        data['imageUrl'] != ""
+                                            ? data['imageUrl']
+                                            : nullUrl,
+                                      ),
+                                      // data['productUrl'] ?? nullUrl),
                                       // ) : const AssetImage('images/no_image.png'),
                                       fit: BoxFit.cover),
                                 ),
@@ -278,7 +272,13 @@ class StockPage extends ConsumerWidget {
                                 mainColor: Color.fromARGB(255, 174, 217, 224),
                                 shadowColor: Color.fromARGB(255, 0, 0, 0)
                                     .withOpacity(0.2),
-                                onPressed: () => context.go('/shipping'),
+                                onPressed: () {
+                                  ref
+                                      .read(detailProductProvider.notifier)
+                                      .state = data['productId'].toString();
+                                  debugPrint(ref.watch(detailProductProvider));
+                                  context.go('/detail');
+                                },
                                 width: 60,
                                 height: 70,
                                 textSize: 20,
@@ -305,7 +305,7 @@ class StockPage extends ConsumerWidget {
                   }
                 }),
           ),
-        ))
+        )
       ]),
     );
   }
