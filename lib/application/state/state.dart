@@ -12,6 +12,12 @@ class StockType extends _$StockType {
 }
 
 @riverpod
+class iconRotate extends _$iconRotate {
+  @override
+  double build() => 1.0;
+}
+
+@riverpod
 class DetailProduct extends _$DetailProduct {
   @override
   String build() => 'none';

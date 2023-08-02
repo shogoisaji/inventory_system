@@ -102,8 +102,8 @@ class StockPage extends ConsumerWidget {
             ],
           ),
           height: 95,
-          padding: EdgeInsets.only(
-              left: (MediaQuery.of(context).size.width) / 2 - 200),
+          // padding: EdgeInsets.only(
+          //     left: (MediaQuery.of(context).size.width) / 2 - 200),
           child: ListView.builder(
             itemCount: typeList.length,
             scrollDirection: Axis.horizontal,

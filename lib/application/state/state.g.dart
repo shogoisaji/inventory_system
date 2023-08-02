@@ -92,6 +92,21 @@ final stockTypeProvider = AutoDisposeNotifierProvider<StockType, int>.internal(
 );
 
 typedef _$StockType = AutoDisposeNotifier<int>;
+String _$iconRotateHash() => r'ed8caae6056a40a7f037ec1442676d1e763555b1';
+
+/// See also [iconRotate].
+@ProviderFor(iconRotate)
+final iconRotateProvider =
+    AutoDisposeNotifierProvider<iconRotate, double>.internal(
+  iconRotate.new,
+  name: r'iconRotateProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$iconRotateHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$iconRotate = AutoDisposeNotifier<double>;
 String _$detailProductHash() => r'5f9b211b37d20f6a34a9aeabb75c8618419eb694';
 
 /// See also [DetailProduct].

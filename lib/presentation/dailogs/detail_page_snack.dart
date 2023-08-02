@@ -3,71 +3,74 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
-void showSnackForm(BuildContext context, String docName) {
+void showSnackForm(
+    BuildContext context, String docName, double iconController) {
   TextEditingController valueController = TextEditingController();
-  // ScaffoldMessenger.of(context).showSnackBar(
-  //   SnackBar(
-  //     duration: const Duration(minutes: 1),
-  //     action: SnackBarAction(
-  //       label: '閉じる',
-  //       onPressed: () {
-  //         ScaffoldMessenger.of(context).hideCurrentSnackBar();
-  //       },
-  //     ),
-  //     elevation: 10,
-  //     behavior: SnackBarBehavior.floating,
-  //     backgroundColor: Color.fromARGB(255, 207, 226, 255),
-  //     content: Column(
-  //       children: [
-  //         Center(child: Text('数量を入力してくださ', style: TextStyle(fontSize: 24))),
-  //         TextField(
-  //           keyboardType: TextInputType.number,
-  //           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-  //           controller: valueController,
-  //           decoration: const InputDecoration(hintText: "数量"),
-  //         ),
-  //       ],
-  //     ),
-  //   ),
-  // );
-
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    behavior: SnackBarBehavior.floating,
     duration: const Duration(minutes: 1),
-    backgroundColor: Colors.blue,
+    backgroundColor: Color.fromARGB(255, 0, 81, 147),
     content: Container(
-      height: 150,
+      height: 200,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('数量を入力してくださ', style: TextStyle(fontSize: 24)),
-          TextField(
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            controller: valueController,
-            decoration: const InputDecoration(hintText: "数量"),
+          const Text('数量を入力してくださ', style: TextStyle(fontSize: 24)),
+          Transform.rotate(
+            angle: iconController * 6.28, // 回転角度（ラジアン）
+            child: Icon(Icons.refresh, size: 50),
+          ),
+          // const SizedBox(
+          //   height: 15,
+          // ),
+          SizedBox(
+            width: 100,
+            child: TextField(
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              controller: valueController,
+              decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Color.fromARGB(255, 220, 230, 255),
+                  helperStyle: TextStyle(color: Colors.white),
+                  hintText: "数量",
+                  hintStyle:
+                      TextStyle(color: Color.fromARGB(255, 70, 172, 255))),
+            ),
+          ),
+          const SizedBox(
+            height: 15,
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                child: Text('Button'),
-                onPressed: () {},
+                child: const Text('キャンセル'),
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                },
+              ),
+              const SizedBox(
+                width: 30,
               ),
               ElevatedButton(
-                child: Text('Button'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue,
+                ),
+                child: const Text('入庫', style: TextStyle(color: Colors.white)),
                 onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    },
-                    barrierDismissible: false,
-                  );
+                  // showDialog(
+                  //   context: context,
+                  //   builder: (context) {
+                  //     return const Center(
+                  //       child: CircularProgressIndicator(),
+                  //     );
+                  //   },
+                  //   barrierDismissible: false,
+                  // );
                   Future.delayed(const Duration(seconds: 2), () {
-                    // context.go('/stock');
-                    // // Navigator.pop(context);
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
                   });
                 },
               ),
