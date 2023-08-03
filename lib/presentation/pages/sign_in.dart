@@ -195,8 +195,7 @@ class SignInPage extends StatelessWidget {
                           TextEditingController();
 
                       return AlertDialog(
-                        backgroundColor:
-                            const Color.fromARGB(255, 220, 239, 255),
+                        backgroundColor: Color.fromARGB(255, 225, 242, 255),
                         title: const Text('アカウント登録'),
                         content: SingleChildScrollView(
                           child: ListBody(
@@ -211,7 +210,10 @@ class SignInPage extends StatelessWidget {
                               ),
                               const Text('必須',
                                   style: TextStyle(
-                                      fontSize: 14, color: Colors.red)),
+                                      fontSize: 12, color: Colors.red)),
+                              SizedBox(
+                                height: 5,
+                              ),
                               TextField(
                                 controller: _passwordController,
                                 decoration:
@@ -220,7 +222,10 @@ class SignInPage extends StatelessWidget {
                               ),
                               const Text('必須',
                                   style: TextStyle(
-                                      fontSize: 14, color: Colors.red)),
+                                      fontSize: 12, color: Colors.red)),
+                              SizedBox(
+                                height: 5,
+                              ),
                               TextField(
                                 controller: _nameController,
                                 decoration:
@@ -228,7 +233,10 @@ class SignInPage extends StatelessWidget {
                               ),
                               const Text('必須',
                                   style: TextStyle(
-                                      fontSize: 14, color: Colors.red)),
+                                      fontSize: 12, color: Colors.red)),
+                              SizedBox(
+                                height: 5,
+                              ),
                               TextField(
                                 controller: _departmentController,
                                 decoration:

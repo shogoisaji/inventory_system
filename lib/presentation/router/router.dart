@@ -8,12 +8,12 @@ import '../pages/detail_page.dart';
 import '../pages/shipping_page.dart';
 import '../pages/sign_in.dart';
 import '../pages/stock_page.dart';
-import '../pages/warehousing_page.dart';
+import '../pages/product_registraion_page.dart.dart';
 part 'router.g.dart';
 
 class PagePath {
   static const signIn = '/sign-in';
-  static const warehousing = '/warehousing';
+  static const productRegistration = '/productRegistration';
   static const shipping = '/shipping';
   static const stock = '/stock';
   static const account = '/account';
@@ -36,8 +36,8 @@ GoRouter router(RouterRef ref) {
       routes: [
         // ホーム画面
         GoRoute(
-          path: PagePath.warehousing,
-          builder: (_, __) => WarehousingPage(),
+          path: PagePath.productRegistration,
+          builder: (_, __) => ProductRegistrationPage(),
         ),
         GoRoute(
           path: PagePath.shipping,

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -12,15 +14,15 @@ class StockType extends _$StockType {
 }
 
 @riverpod
-class iconRotate extends _$iconRotate {
-  @override
-  double build() => 1.0;
-}
-
-@riverpod
 class DetailProduct extends _$DetailProduct {
   @override
   String build() => 'none';
+}
+
+@riverpod
+class ImageFile extends _$ImageFile {
+  @override
+  File? build() => null;
 }
 
 ///
@@ -60,6 +62,25 @@ bool signedIn(SignedInRef ref) {
 @riverpod
 String userId(UserIdRef ref) {
   throw 'スコープ内の画面でしか使えません';
+}
+
+/// ユーザー名
+@riverpod
+Stream<DocumentSnapshot> userData(UserDataRef ref) {
+  final user = ref.watch(userProvider);
+  DocumentReference userRef =
+      FirebaseFirestore.instance.collection('users').doc(user?.uid);
+  return userRef.snapshots();
+}
+
+@riverpod
+String? userName(UserNameRef ref) {
+  final userData = ref.watch(userDataProvider);
+  return userData.when(
+    loading: () => null,
+    error: (_, __) => null,
+    data: (d) => d['name'],
+  );
 }
 
 // @riverpod

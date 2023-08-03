@@ -25,11 +25,6 @@ class AccountPage extends ConsumerWidget {
       return await userRef.get();
     }
 
-    // Future<String> fetchUserDataValues() async {
-    //   DocumentSnapshot snapshot = await fetchUserData();
-    //   return snapshot['name'];
-    // }
-
     return Scaffold(
         body: ListView(children: [
       Column(children: [
@@ -103,7 +98,7 @@ class AccountPage extends ConsumerWidget {
                     DocumentSnapshot data = snapshot.data!;
                     return Column(children: [
                       const SizedBox(
-                        height: 15.0,
+                        height: 5.0,
                       ),
                       AccountDetailView(
                         typeText: 'Name',
@@ -135,7 +130,7 @@ class AccountPage extends ConsumerWidget {
                   }
                 }),
             const SizedBox(
-              height: 40,
+              height: 20,
             ),
             CustomButtonGradation(
                 text: '在庫一覧',
@@ -151,7 +146,7 @@ class AccountPage extends ConsumerWidget {
                 textSize: 16,
                 textColor: Colors.white),
             const SizedBox(
-              height: 30,
+              height: 20,
             ),
             CustomButtonGradation(
                 text: 'ログアウト',

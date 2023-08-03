@@ -24,6 +24,8 @@ class StockPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final username = ref.watch(userNameProvider) ?? "";
+
     Future<List<DocumentSnapshot>> fetchFilteredData() async {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('items')
@@ -31,13 +33,6 @@ class StockPage extends ConsumerWidget {
               isEqualTo: typeList.keys.elementAt(ref.watch(stockTypeProvider)))
           .get();
       return querySnapshot.docs;
-    }
-
-    Stream<DocumentSnapshot> fetchUserData() {
-      DocumentReference userRef = FirebaseFirestore.instance
-          .collection('users')
-          .doc(ref.watch(userIdProvider));
-      return userRef.snapshots();
     }
 
     return Scaffold(
@@ -51,39 +46,27 @@ class StockPage extends ConsumerWidget {
                   onPressed: () {
                     return context.go('/account');
                   }),
-              // Text(username),
               Container(
                 padding: const EdgeInsets.only(right: 8.0),
                 constraints: const BoxConstraints(
                   maxWidth: 70,
                 ),
-                child: StreamBuilder<DocumentSnapshot>(
-                    stream: fetchUserData(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else {
-                        DocumentSnapshot data = snapshot.data!;
-                        return Text(
-                          data['name'],
-                          overflow: TextOverflow.ellipsis,
-                        );
-                      }
-                    }),
+                child: Text(
+                  username,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ])
           ]),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          return context.go('/warehousing');
+          return context.go('/productRegistration');
         },
         backgroundColor: const Color.fromARGB(255, 103, 103, 103),
         elevation: 5.0,
         label: BoldText(
-          text: '入庫',
-          size: 24,
+          text: '商品登録',
+          size: 18,
           color: Colors.white,
         ),
         icon: const Icon(Icons.add),
@@ -102,8 +85,6 @@ class StockPage extends ConsumerWidget {
             ],
           ),
           height: 95,
-          // padding: EdgeInsets.only(
-          //     left: (MediaQuery.of(context).size.width) / 2 - 200),
           child: ListView.builder(
             itemCount: typeList.length,
             scrollDirection: Axis.horizontal,
@@ -161,7 +142,6 @@ class StockPage extends ConsumerWidget {
                             docs[index].data() as Map<String, dynamic>;
                         return Container(
                           constraints: BoxConstraints(maxWidth: 400),
-                          // width: 400,
                           height: 90,
                           decoration: BoxDecoration(
                             color: const Color.fromARGB(255, 235, 235, 235),
@@ -193,8 +173,6 @@ class StockPage extends ConsumerWidget {
                                             ? data['imageUrl']
                                             : nullUrl,
                                       ),
-                                      // data['productUrl'] ?? nullUrl),
-                                      // ) : const AssetImage('images/no_image.png'),
                                       fit: BoxFit.cover),
                                 ),
                               ),

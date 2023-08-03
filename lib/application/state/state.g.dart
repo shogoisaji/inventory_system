@@ -78,6 +78,37 @@ final userIdProvider = AutoDisposeProvider<String>.internal(
 );
 
 typedef UserIdRef = AutoDisposeProviderRef<String>;
+String _$userDataHash() => r'3e1ea1559ef4293bed2c29c5a99d296cd026f89e';
+
+/// ユーザー名
+///
+/// Copied from [userData].
+@ProviderFor(userData)
+final userDataProvider =
+    AutoDisposeStreamProvider<DocumentSnapshot<Object?>>.internal(
+  userData,
+  name: r'userDataProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$userDataHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef UserDataRef = AutoDisposeStreamProviderRef<DocumentSnapshot<Object?>>;
+String _$userNameHash() => r'405db1dcc9764720dd6851eaa467c6c0dd443026';
+
+/// See also [userName].
+@ProviderFor(userName)
+final userNameProvider = AutoDisposeProvider<String?>.internal(
+  userName,
+  name: r'userNameProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$userNameHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef UserNameRef = AutoDisposeProviderRef<String?>;
 String _$stockTypeHash() => r'd1defb54c091d09bd1684eb7a469420bc9033249';
 
 /// See also [StockType].
@@ -92,21 +123,6 @@ final stockTypeProvider = AutoDisposeNotifierProvider<StockType, int>.internal(
 );
 
 typedef _$StockType = AutoDisposeNotifier<int>;
-String _$iconRotateHash() => r'ed8caae6056a40a7f037ec1442676d1e763555b1';
-
-/// See also [iconRotate].
-@ProviderFor(iconRotate)
-final iconRotateProvider =
-    AutoDisposeNotifierProvider<iconRotate, double>.internal(
-  iconRotate.new,
-  name: r'iconRotateProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$iconRotateHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$iconRotate = AutoDisposeNotifier<double>;
 String _$detailProductHash() => r'5f9b211b37d20f6a34a9aeabb75c8618419eb694';
 
 /// See also [DetailProduct].
@@ -123,4 +139,19 @@ final detailProductProvider =
 );
 
 typedef _$DetailProduct = AutoDisposeNotifier<String>;
+String _$imageFileHash() => r'74809ddb6fe8f15e7dc08e4b339c093e235f52b6';
+
+/// See also [ImageFile].
+@ProviderFor(ImageFile)
+final imageFileProvider =
+    AutoDisposeNotifierProvider<ImageFile, File?>.internal(
+  ImageFile.new,
+  name: r'imageFileProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$imageFileHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$ImageFile = AutoDisposeNotifier<File?>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_test_various/presentation/dailogs/detail_page_snack.dart';
+import 'package:flutter_test_various/presentation/dailogs/increment_snak.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../application/state/state.dart';
-import '../dailogs/detail_page_dailog.dart';
+import '../dailogs/decrement_snak.dart';
 import '../wedget/account_ditail_view.dart';
 import '../wedget/custom_bottunGradation.dart';
 import '../wedget/text_style.dart';
@@ -20,13 +20,7 @@ class DetailPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final String pruductNumber = ref.watch(detailProductProvider).toString();
     final String docName = 'product$pruductNumber';
-
-    Stream<DocumentSnapshot> fetchUserData() {
-      DocumentReference userRef = FirebaseFirestore.instance
-          .collection('users')
-          .doc(ref.watch(userIdProvider));
-      return userRef.snapshots();
-    }
+    final username = ref.watch(userNameProvider) ?? "";
 
     Future<DocumentSnapshot> fetchProductData() async {
       DocumentSnapshot querySnapshot = await FirebaseFirestore.instance
@@ -146,8 +140,11 @@ class DetailPage extends ConsumerWidget {
                                           Color.fromARGB(255, 1, 0, 57),
                                       onPressed: () {
                                         // showMyDialog(context, docName);
-                                        showSnackForm(context, docName,
-                                            ref.watch(iconRotateProvider));
+                                        incrementSnackForm(
+                                          context,
+                                          docName,
+                                          username,
+                                        );
                                       },
                                       width: 50,
                                       height: 80,
@@ -167,45 +164,10 @@ class DetailPage extends ConsumerWidget {
                                       borderColor2:
                                           Color.fromARGB(255, 126, 0, 0),
                                       onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            TextEditingController
-                                                valueController =
-                                                TextEditingController();
-                                            return AlertDialog(
-                                              backgroundColor: Color.fromARGB(
-                                                  255, 255, 226, 226),
-                                              title: const Text("出庫登録"),
-                                              content: SingleChildScrollView(
-                                                child: ListBody(children: [
-                                                  TextField(
-                                                    controller: valueController,
-                                                    decoration:
-                                                        const InputDecoration(
-                                                            hintText: "数量"),
-                                                  ),
-                                                ]),
-                                              ),
-                                              actions: [
-                                                TextButton(
-                                                  child: const Text("cancel"),
-                                                  onPressed: () =>
-                                                      Navigator.pop(context),
-                                                ),
-                                                TextButton(
-                                                    child: const Text("出庫",
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                        )),
-                                                    onPressed: () => (
-                                                          //
-                                                          //
-                                                          //
-                                                        )),
-                                              ],
-                                            );
-                                          },
+                                        decrementSnackForm(
+                                          context,
+                                          docName,
+                                          username,
                                         );
                                       },
                                       width: 50,
@@ -217,43 +179,154 @@ class DetailPage extends ConsumerWidget {
                             ],
                           ),
                           const SizedBox(
-                            height: 20.0,
+                            height: 5.0,
                           ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               AccountDetailView(
-                                width: 80,
-                                typeText: 'ID',
+                                width: 85,
+                                typeText: ' ID',
                                 // textContent: data['productId'].toString(),
                                 textContent: (data['productId'].toString())
                                     .padLeft(5, '0'),
                               ),
                               const SizedBox(
-                                width: 25,
+                                width: 20,
                               ),
                               AccountDetailView(
-                                width: 80,
-                                typeText: '種類',
+                                width: 85,
+                                typeText: ' 種類',
                                 textContent: data['productType'],
                               ),
                               const SizedBox(
-                                width: 25,
+                                width: 20,
                               ),
                               AccountDetailView(
                                 width: 80,
-                                typeText: '数量',
+                                typeText: ' 数量',
                                 textContent: data['productVolume'].toString(),
                               ),
                             ],
                           ),
                           const SizedBox(
-                            height: 15.0,
+                            height: 10.0,
                           ),
                           AccountDetailView(
-                            typeText: '商品名',
+                            typeText: ' 商品名',
                             textContent: data['productName'],
                           ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Column(children: [
+                                Container(
+                                  width: 135,
+                                  alignment: Alignment.bottomLeft,
+                                  child: const Text(' 最終入庫',
+                                      style: TextStyle(
+                                        color: Colors.blueGrey,
+                                      )),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(7.0),
+                                    color: Colors.blueGrey.withOpacity(0.3),
+                                  ),
+                                  width: 130,
+                                  // height: 70,
+                                  // alignment: Alignment.centerLeft,
+                                  padding:
+                                      const EdgeInsets.fromLTRB(7, 7, 0, 7),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.person,
+                                            color: Colors.black38,
+                                          ),
+                                          Container(
+                                            width: 90,
+                                            child: Text(
+                                                data['finalInventoryPerson'],
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                    fontSize: 16.0)),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.event_note_sharp,
+                                            color: Colors.black38,
+                                          ),
+                                          Text(data['finalInventoryDate'],
+                                              style: TextStyle(fontSize: 16.0)),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ]),
+                              const SizedBox(
+                                width: 22,
+                              ),
+                              Column(children: [
+                                Container(
+                                  width: 135,
+                                  alignment: Alignment.bottomLeft,
+                                  child: const Text(' 最終入庫',
+                                      style: TextStyle(
+                                        color: Colors.blueGrey,
+                                      )),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(7.0),
+                                    color: Colors.blueGrey.withOpacity(0.3),
+                                  ),
+                                  width: 130,
+                                  padding:
+                                      const EdgeInsets.fromLTRB(7, 7, 0, 7),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.person,
+                                            color: Colors.black38,
+                                          ),
+                                          Container(
+                                            width: 90,
+                                            child: Text(
+                                                data['finalExporterPerson'],
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                    fontSize: 16.0)),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.event_note_sharp,
+                                            color: Colors.black38,
+                                          ),
+                                          Text(data['finalExporterDate'],
+                                              style: const TextStyle(
+                                                  fontSize: 16.0)),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ]),
+                            ],
+                          )
                         ]);
                       }
                     }),
