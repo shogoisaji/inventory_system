@@ -7,6 +7,25 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 part 'state.g.dart';
 
+const List<String> productTypeList = <String>['部品', '文房具', '機器', '消耗品', '梱包材'];
+
+// ローディング
+@riverpod
+class LoadingState extends _$LoadingState {
+  @override
+  bool build() => false;
+
+  void show() => state = true;
+
+  void hide() => state = false;
+}
+
+@riverpod
+class ProductType extends _$ProductType {
+  @override
+  String build() => productTypeList[0];
+}
+
 @riverpod
 class StockType extends _$StockType {
   @override

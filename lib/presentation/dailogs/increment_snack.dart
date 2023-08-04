@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_test_various/application/state/state.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../wedget/date_get.dart';
 
-void incrementSnackForm(BuildContext context, String docName, String username) {
-  TextEditingController valueController = TextEditingController();
-  String currentDate = getCurrentDate();
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    behavior: SnackBarBehavior.floating,
-    duration: const Duration(minutes: 1),
-    backgroundColor: const Color.fromARGB(255, 0, 81, 147),
-    content: SizedBox(
+class IncrementSnack extends HookConsumerWidget {
+  final String docName;
+  final String username;
+  const IncrementSnack(this.docName, this.username, {super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final valueController = useTextEditingController();
+    String currentDate = getCurrentDate();
+
+    return SizedBox(
       height: 200,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -94,19 +100,22 @@ void incrementSnackForm(BuildContext context, String docName, String username) {
                         );
                       }
                     });
-                    showDialog(
-                      useRootNavigator: false,
-                      context: context,
-                      builder: (context) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      },
-                      barrierDismissible: false,
-                    );
+                    // showDialog(
+                    //   useRootNavigator: false,
+                    //   context: context,
+                    //   builder: (context) {
+                    //     return const Center(
+                    //       child: CircularProgressIndicator(),
+                    //     );
+                    //   },
+                    //   barrierDismissible: false,
+                    // );
+
+                    ref.read(loadingStateProvider.notifier).show();
+
                     Future.delayed(const Duration(seconds: 2), () {
+                      ref.read(loadingStateProvider.notifier).hide();
                       context.go('/stock');
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
                     });
                   }
                 },
@@ -115,6 +124,6 @@ void incrementSnackForm(BuildContext context, String docName, String username) {
           )
         ],
       ),
-    ),
-  ));
+    );
+  }
 }

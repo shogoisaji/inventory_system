@@ -14,6 +14,8 @@ dependencies:
   google_sign_in:
   google_fonts:
   flutter_riverpod:
+  flutter_hooks:
+  hooks_riverpod:
   firebase_auth:
   sqflite: any
   path_provider: any

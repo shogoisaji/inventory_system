@@ -109,6 +109,36 @@ final userNameProvider = AutoDisposeProvider<String?>.internal(
 );
 
 typedef UserNameRef = AutoDisposeProviderRef<String?>;
+String _$loadingStateHash() => r'c5ad5038b4e4a4ebcf07005df266898fef8c3f06';
+
+/// See also [LoadingState].
+@ProviderFor(LoadingState)
+final loadingStateProvider =
+    AutoDisposeNotifierProvider<LoadingState, bool>.internal(
+  LoadingState.new,
+  name: r'loadingStateProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$loadingStateHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$LoadingState = AutoDisposeNotifier<bool>;
+String _$productTypeHash() => r'd02386b8a4d069f31d878c90429d6ea5f3800c0d';
+
+/// See also [ProductType].
+@ProviderFor(ProductType)
+final productTypeProvider =
+    AutoDisposeNotifierProvider<ProductType, String>.internal(
+  ProductType.new,
+  name: r'productTypeProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$productTypeHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$ProductType = AutoDisposeNotifier<String>;
 String _$stockTypeHash() => r'd1defb54c091d09bd1684eb7a469420bc9033249';
 
 /// See also [StockType].

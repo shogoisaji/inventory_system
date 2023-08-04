@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import '../../application/state/state.dart';
 import '../../presentation/wedget/date_get.dart';
 
 class FirebaseService {
   final db = FirebaseFirestore.instance;
   String currentDate = getCurrentDate();
 
+// productId連番
   Future<int> incrementCounter() async {
     DocumentReference counterRef = db.collection('settings').doc('settings');
     return db.runTransaction((transaction) async {
@@ -40,47 +41,58 @@ class FirebaseService {
     if (imageFile != null && fileName != null) {
       final imageUrl =
           await uploadImage(imageFile, nextId.toString() + fileName);
-      print(imageFile);
+    }
 
-      await FirebaseFirestore.instance
-          .collection('items')
-          .doc('product$nextId')
-          .set({
-        'productName': productName,
-        'productId': nextId,
-        'productType': productType,
-        'productVolume': productVolume,
-        'imageUrl': imageUrl,
-        'timeStamp': currentDate,
-        'finalExporterDate': " -",
-        'finalExporterPerson': " -",
-        'finalInventoryDate': " -",
-        'finalInventoryPerson': " -",
-      });
+    await FirebaseFirestore.instance
+        .collection('items')
+        .doc('product$nextId')
+        .set({
+          'productName': productName,
+          'productId': nextId,
+          'productType': productType,
+          'productVolume': productVolume,
+          'imageUrl': imageUrl,
+          'timeStamp': currentDate,
+          'finalExporterDate': " -",
+          'finalExporterPerson': " -",
+          'finalInventoryDate': " -",
+          'finalInventoryPerson': " -",
+        })
+        .then((void value) {})
+        .catchError((error) {
+          print("Failed to upload data: $error");
+        });
+  }
+
+// FireStoreのデータを削除する
+  Future<String> deleteData(String doc) async {
+    String deleteComment;
+    try {
+      await FirebaseFirestore.instance.collection('items').doc(doc).delete();
+      print("'$doc'を削除しました");
+      return 'success';
+    } catch (error) {
+      print("Error: $error");
+      return 'error';
     }
   }
 
-  // Cloud Storageに画像をアップロードする関数
+// Cloud Storageに画像をアップロードする関数
   Future<String> uploadImage(File imageFile, String fileName) async {
-    // pathはStorage内でのファイルの位置を指定します（例: 'images/myImage.jpg'）
     Reference ref = FirebaseStorage.instance.ref().child('images/$fileName');
-    // Reference ref = FirebaseStorage.instance.ref().child(path);
     UploadTask uploadTask = ref.putFile(imageFile);
 
-    // アップロードが完了するのを待つ
     TaskSnapshot snapshot = await uploadTask.whenComplete(() {});
-    // ダウンロードURLを取得
     String downloadUrl = await snapshot.ref.getDownloadURL();
 
     return downloadUrl;
   }
 
+// ImagePickerを使って画像選択
   Future<File?> pickImage() async {
-    // Let user pick image from gallery
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
-    // Check if the image is picked
     if (pickedFile != null) {
       print(pickedFile.path);
       return File(pickedFile.path);
@@ -88,25 +100,5 @@ class FirebaseService {
       print('No image selected.');
       return null;
     }
-  }
-
-  Future<DocumentSnapshot> getDocument(
-    String collectionName,
-    String documentId,
-  ) async {
-    return await db.collection(collectionName).doc(documentId).get();
-  }
-
-  Future<void> valumeIncrement(String product, int incrementValue) async {
-    final docRef = FirebaseFirestore.instance.collection('items').doc(product);
-
-    FirebaseFirestore.instance.runTransaction((Transaction tx) async {
-      DocumentSnapshot doc = await tx.get(docRef);
-
-      if (doc.exists) {
-        int currentValue = doc.get('productValue');
-        tx.update(docRef, {'productValue': currentValue + incrementValue});
-      }
-    });
   }
 }

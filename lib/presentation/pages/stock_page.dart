@@ -218,7 +218,7 @@ class StockPage extends ConsumerWidget {
                                         child: Align(
                                           alignment: Alignment.center,
                                           child: NormalText(
-                                            text: '総数',
+                                            text: '数量',
                                             color: Colors.white,
                                             size: 15,
                                           ),

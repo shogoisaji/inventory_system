@@ -2,17 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../wedget/date_get.dart';
 
-void decrementSnackForm(BuildContext context, String docName, String username) {
-  TextEditingController valueController = TextEditingController();
-  String currentDate = getCurrentDate();
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    behavior: SnackBarBehavior.floating,
-    duration: const Duration(minutes: 1),
-    backgroundColor: const Color.fromARGB(255, 160, 30, 30),
-    content: SizedBox(
+class DecrementSnack extends HookWidget {
+  final String docName;
+  final String username;
+  const DecrementSnack(this.docName, this.username, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final valueController = useTextEditingController();
+    String currentDate = getCurrentDate();
+
+    return SizedBox(
       height: 200,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -136,6 +140,6 @@ void decrementSnackForm(BuildContext context, String docName, String username) {
           )
         ],
       ),
-    ),
-  ));
+    );
+  }
 }

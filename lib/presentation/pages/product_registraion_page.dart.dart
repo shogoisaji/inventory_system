@@ -1,7 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_test_various/infrastructure/firebase/firebase_service.dart';
 import 'package:go_router/go_router.dart';
 import '../../application/state/state.dart';
@@ -12,14 +13,14 @@ import '../wedget/date_get.dart';
 import 'package:path/path.dart';
 import 'dart:io';
 
-class ProductRegistrationPage extends ConsumerWidget {
-  final TextEditingController productName = TextEditingController();
-  final TextEditingController productVolume = TextEditingController();
+class ProductRegistrationPage extends HookConsumerWidget {
   String currentDate = getCurrentDate();
   final String productUrl = "";
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final productName = useTextEditingController();
+    final productVolume = useTextEditingController();
     final username = ref.watch(userNameProvider) ?? "";
     File? imageFile = ref.watch(imageFileProvider);
     final String fileName = ref.watch(imageFileProvider) != null
@@ -125,7 +126,6 @@ class ProductRegistrationPage extends ConsumerWidget {
               ],
             ),
             SizedBox(
-              // padding: const EdgeInsets.only(top: 20),
               width: 330,
               child: TextField(
                 keyboardType: TextInputType.number,
@@ -147,7 +147,7 @@ class ProductRegistrationPage extends ConsumerWidget {
               child: Row(
                 children: [
                   Container(
-                    child: Text(fileName ?? ""),
+                    child: Text(fileName),
                   ),
                   IconButton(
                       icon: const Icon(Icons.folder_open_outlined),
@@ -180,6 +180,19 @@ class ProductRegistrationPage extends ConsumerWidget {
                         : 0;
                     await service.upLoad(productName.text, selectedType, volume,
                         username, imageFile, fileName);
+                    showDialog(
+                      useRootNavigator: false,
+                      context: context,
+                      builder: (context) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                      barrierDismissible: false,
+                    );
+                    Future.delayed(const Duration(seconds: 2), () {
+                      context.go('/stock');
+                    });
                   } else {
                     showDialog(
                       context: context,
