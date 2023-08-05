@@ -1,18 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../application/state/state.dart';
 import '../../infrastructure/firebase/firebase_service.dart';
 import '../dailogs/decrement_snack.dart';
-import '../dailogs/increment_dailog.dart';
 import '../dailogs/increment_snack.dart';
 import '../wedget/account_ditail_view.dart';
 import '../wedget/custom_bottunGradation.dart';
 import '../wedget/text_style.dart';
 
-class DetailPage extends ConsumerWidget {
+class DetailPage extends HookConsumerWidget {
   final String nullUrl =
       'https://firebasestorage.googleapis.com/v0/b/inventory-system-6bc22.appspot.com/o/images%2FNoImage.png?alt=media&token=95a23072-296e-4380-abd7-6dcb80ba647b';
 
@@ -24,6 +25,7 @@ class DetailPage extends ConsumerWidget {
     final String docName = 'product$pruductNumber';
     final username = ref.watch(userNameProvider) ?? "";
     final isLoading = ref.watch(loadingStateProvider);
+    final _screenSize = MediaQuery.of(context).size;
 
     Future<DocumentSnapshot> fetchProductData() async {
       DocumentSnapshot querySnapshot = await FirebaseFirestore.instance
@@ -34,85 +36,65 @@ class DetailPage extends ConsumerWidget {
     }
 
     return Scaffold(
-      body: ListView(children: [
-        Column(children: [
-          Stack(children: [
-            Positioned(
-              child: Container(
-                width: double.infinity,
-                height: 275,
-                color: Color.fromARGB(255, 119, 228, 107),
+      body: SingleChildScrollView(
+          child: Container(
+        height: 850,
+        child: Stack(children: [
+          Container(
+            width: double.infinity,
+            // height: _screenSize.height,
+            color: Color.fromARGB(255, 119, 228, 107),
+          ),
+          Positioned(
+            left: 50,
+            top: 0,
+            child: Container(
+              width: 400,
+              height: 400,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('images/Logistics_Isometric.png'),
+                    fit: BoxFit.cover),
               ),
             ),
-            Positioned(
-              left: 50,
-              top: -50,
-              child: Container(
-                width: 400,
-                height: 400,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('images/Logistics_Isometric.png'),
-                      fit: BoxFit.cover),
+          ),
+          Positioned(
+            left: 15,
+            top: 60,
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              TitleText(
+                text: 'Detail',
+                color: Colors.white,
+                size: 46,
+              ),
+            ]),
+          ),
+          Positioned(
+            top: 300,
+            child: Container(
+              width: 400,
+              height: 550,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
                 ),
-              ),
-            ),
-            Positioned(
-                left: 0,
-                top: 250,
-                right: 0,
-                child: Container(
-                  height: 25,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25.0),
-                      topRight: Radius.circular(25.0),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color.fromARGB(130, 0, 0, 0),
-                        offset: Offset(0, 0),
-                        blurRadius: 10,
-                        spreadRadius: 2,
-                      ),
-                    ],
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromARGB(130, 0, 0, 0),
+                    offset: Offset(0, 0),
+                    blurRadius: 10,
+                    spreadRadius: 2,
                   ),
-                )),
-            Positioned(
-              left: 15,
-              top: 10,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TitleText(
-                      text: 'Detail',
-                      color: Colors.white,
-                      size: 46,
-                    ),
-                  ]),
-            ),
-            Positioned(top: 100, child: IncrementDailog(docName, username)),
-            if (isLoading)
-              Container(
-                height: MediaQuery.of(context).size.height,
-                width: double.infinity,
-                decoration: const BoxDecoration(color: Colors.black54),
-                child: const Align(
-                  alignment: Alignment(0, -0.5),
-                  child: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: CircularProgressIndicator()),
-                ),
+                ],
               ),
-            Positioned(
-              top: 350,
               child: Center(
                 child: Column(
                   children: [
                     Container(
-                      padding: const EdgeInsets.only(right: 8.0),
+                      padding: const EdgeInsets.only(top: 30.0),
                       constraints: const BoxConstraints(
                         maxWidth: 300,
                       ),
@@ -460,10 +442,7 @@ class DetailPage extends ConsumerWidget {
                           }),
                     ),
                     const SizedBox(
-                      height: 15,
-                    ),
-                    const SizedBox(
-                      height: 15,
+                      height: 25,
                     ),
                     CustomButtonGradation(
                         text: '在庫一覧',
@@ -481,10 +460,29 @@ class DetailPage extends ConsumerWidget {
                   ],
                 ),
               ),
-            )
-          ]),
-        ])
-      ]),
+            ),
+          ),
+          // CustomDialog
+          // SizedBox(
+          //   width: _screenSize.width,
+          //   height: _screenSize.height,
+          //   child: Align(
+          //       alignment: const Alignment(0, -0.3),
+          //       child: IncrementDailog(docName, username)),
+          // ),
+          if (isLoading)
+            Container(
+              height: _screenSize.height,
+              width: _screenSize.width,
+              decoration: const BoxDecoration(color: Colors.black54),
+              child: const Align(
+                alignment: Alignment(0, -0.5),
+                child: SizedBox(
+                    width: 50, height: 50, child: CircularProgressIndicator()),
+              ),
+            ),
+        ]),
+      )),
     );
   }
 }

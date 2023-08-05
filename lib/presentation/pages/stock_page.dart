@@ -25,6 +25,7 @@ class StockPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final username = ref.watch(userNameProvider) ?? "";
+    final _screenSize = MediaQuery.of(context).size;
 
     Future<List<DocumentSnapshot>> fetchFilteredData() async {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -119,32 +120,33 @@ class StockPage extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 5),
-        Expanded(
-          child: SizedBox(
-            child: FutureBuilder<List<DocumentSnapshot>>(
-                future: fetchFilteredData(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator(strokeWidth: 0.0);
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    List<DocumentSnapshot> docs = snapshot.data!;
-                    return ListView.separated(
-                      separatorBuilder: (BuildContext context, int index) =>
-                          const Divider(
-                        color: Color.fromARGB(0, 255, 255, 255),
-                        thickness: 0,
-                      ),
-                      itemCount: docs.length,
-                      itemBuilder: (context, index) {
-                        Map<String, dynamic> data =
-                            docs[index].data() as Map<String, dynamic>;
-                        return Container(
-                          constraints: BoxConstraints(maxWidth: 400),
+        Container(
+          height: _screenSize.height - 260,
+          child: FutureBuilder<List<DocumentSnapshot>>(
+              future: fetchFilteredData(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator(strokeWidth: 0.0);
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  List<DocumentSnapshot> docs = snapshot.data!;
+                  return ListView.separated(
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(
+                      color: Color.fromARGB(0, 255, 255, 255),
+                      thickness: 0,
+                    ),
+                    itemCount: docs.length,
+                    itemBuilder: (context, index) {
+                      Map<String, dynamic> data =
+                          docs[index].data() as Map<String, dynamic>;
+                      return Center(
+                        child: Container(
+                          width: 350,
                           height: 90,
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 235, 235, 235),
+                            color: Color.fromARGB(255, 204, 216, 222),
                             borderRadius: BorderRadius.circular(10.0),
                             boxShadow: [
                               BoxShadow(
@@ -157,11 +159,8 @@ class StockPage extends ConsumerWidget {
                             ],
                           ),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const SizedBox(
-                                width: 10,
-                              ),
                               Container(
                                 height: 70,
                                 width: 70,
@@ -177,7 +176,7 @@ class StockPage extends ConsumerWidget {
                                 ),
                               ),
                               const SizedBox(
-                                width: 10,
+                                width: 20,
                               ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -201,38 +200,32 @@ class StockPage extends ConsumerWidget {
                                     height: 26,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(7.0),
-                                      color: const Color.fromARGB(
-                                          255, 209, 209, 209),
+                                      color: Color.fromARGB(255, 238, 238, 238),
                                     ),
-                                    child: Stack(children: <Widget>[
+                                    child: Row(children: [
                                       Container(
-                                        alignment: Alignment.centerLeft,
+                                        alignment: Alignment.center,
                                         width: 45,
                                         height: 30,
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(7.0),
-                                          color: const Color.fromARGB(
-                                              255, 135, 135, 135),
+                                          color: Color.fromARGB(
+                                              255, 150, 150, 150),
                                         ),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: NormalText(
-                                            text: '数量',
-                                            color: Colors.white,
-                                            size: 15,
-                                          ),
+                                        child: NormalText(
+                                          text: '数量',
+                                          color: Colors.white,
+                                          size: 15,
                                         ),
                                       ),
                                       Container(
+                                        alignment: Alignment.center,
                                         padding:
-                                            const EdgeInsets.only(left: 80.0),
-                                        alignment: Alignment.centerLeft,
-                                        child: NormalText(
-                                          text:
-                                              data['productVolume'].toString(),
-                                          color: Colors.black,
-                                          size: 20,
+                                            const EdgeInsets.only(left: 35.0),
+                                        child: Text(
+                                          data['productVolume'].toString(),
+                                          style: const TextStyle(fontSize: 18),
                                         ),
                                       ),
                                     ]),
@@ -243,11 +236,11 @@ class StockPage extends ConsumerWidget {
                                 ],
                               ),
                               const SizedBox(
-                                width: 10,
+                                width: 20,
                               ),
                               CustomButton(
                                 text: '詳細',
-                                mainColor: Color.fromARGB(255, 174, 217, 224),
+                                mainColor: Color.fromARGB(255, 106, 219, 117),
                                 shadowColor: Color.fromARGB(255, 0, 0, 0)
                                     .withOpacity(0.2),
                                 onPressed: () {
@@ -261,29 +254,31 @@ class StockPage extends ConsumerWidget {
                                 height: 70,
                                 textSize: 20,
                               ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              CustomButton(
-                                text: '出庫',
-                                mainColor:
-                                    const Color.fromARGB(255, 255, 166, 158),
-                                shadowColor: Color.fromARGB(255, 0, 0, 0)
-                                    .withOpacity(0.2),
-                                onPressed: () => context.go('/shipping'),
-                                width: 60,
-                                height: 70,
-                                textSize: 20,
-                              ),
                             ],
                           ),
-                        );
-                      },
-                    );
-                  }
-                }),
-          ),
-        )
+                        ),
+                      );
+                    },
+                  );
+                }
+              }),
+        ),
+        Expanded(
+            child: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+            begin: FractionalOffset.topCenter,
+            end: FractionalOffset.bottomCenter,
+            colors: [
+              Colors.black.withOpacity(0.0),
+              Colors.black.withOpacity(0.5),
+            ],
+            stops: const [
+              0.0,
+              1.0,
+            ],
+          )),
+        ))
       ]),
     );
   }

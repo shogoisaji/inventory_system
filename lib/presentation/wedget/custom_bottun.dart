@@ -11,14 +11,16 @@ class CustomButton extends StatelessWidget {
   final Color shadowColor;
   final VoidCallback onPressed;
 
-  CustomButton({Key? key,
+  CustomButton({
+    Key? key,
     this.textSize = 16,
     this.width = 100,
     this.height = 100,
     required this.text,
     required this.mainColor,
     required this.shadowColor,
-    required this.onPressed,}) : super(key: key);
+    required this.onPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +31,13 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
           // border: Border.all(color: Colors.white, width: 0.2),
           color: mainColor,
-          boxShadow:  [
+          border: Border.all(color: Colors.white30),
+
+          boxShadow: [
             BoxShadow(
               color: shadowColor,
-              offset: const Offset(0, 0),
+              // color: shadowColor,
+              offset: const Offset(0, 2),
               blurRadius: 3,
               spreadRadius: 1,
             ),
@@ -41,7 +46,7 @@ class CustomButton extends StatelessWidget {
         width: width,
         height: height,
         child: Center(
-          child: BoldText(size:textSize, text: text, color: Colors.black),
+          child: BoldText(size: textSize, text: text, color: Colors.black),
         ),
       ),
     );
