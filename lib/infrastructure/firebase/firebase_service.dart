@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import '../../presentation/wedget/date_get.dart';
@@ -9,6 +7,18 @@ import '../../presentation/wedget/date_get.dart';
 class FirebaseService {
   final db = FirebaseFirestore.instance;
   String currentDate = getCurrentDate();
+
+// firestoreデータ取得
+  Future<String?> fetchData(String docName, String valueName) async {
+    final docRef = db.collection('items').doc(docName);
+    await db.runTransaction((Transaction tx) async {
+      DocumentSnapshot doc = await tx.get(docRef);
+      if (doc.exists) {
+        return doc.get(valueName);
+      }
+    });
+    return "0";
+  }
 
 // productId連番
   Future<int> incrementCounter() async {
@@ -100,5 +110,45 @@ class FirebaseService {
       print('No image selected.');
       return null;
     }
+  }
+
+// incrementVolume
+  Future<void> incrementVolume(
+      String docName, String username, int incrementValue) async {
+    final docRef = db.collection('items').doc(docName);
+    await db.runTransaction((Transaction tx) async {
+      DocumentSnapshot doc = await tx.get(docRef);
+      if (doc.exists) {
+        int currentValue = doc.get('productVolume');
+        tx.update(
+          docRef,
+          {
+            'productVolume': currentValue + incrementValue,
+            'finalInventoryPerson': username,
+            'finalInventoryDate': currentDate,
+          },
+        );
+      }
+    });
+  }
+
+  // decrementVolume
+  Future<void> decrementVolume(
+      String docName, String username, int decrementValue) async {
+    final docRef = db.collection('items').doc(docName);
+    await db.runTransaction((Transaction tx) async {
+      DocumentSnapshot doc = await tx.get(docRef);
+      if (doc.exists) {
+        int currentValue = doc.get('productVolume');
+        tx.update(
+          docRef,
+          {
+            'productVolume': currentValue - decrementValue,
+            'finalInventoryPerson': username,
+            'finalInventoryDate': currentDate,
+          },
+        );
+      }
+    });
   }
 }

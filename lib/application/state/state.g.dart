@@ -6,6 +6,42 @@ part of 'state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$productDataHash() => r'e2009a4d9b5f3df40c3880c67b2c158f95079842';
+
+/// productData
+///
+/// Copied from [productData].
+@ProviderFor(productData)
+final productDataProvider =
+    AutoDisposeStreamProvider<DocumentSnapshot<Object?>>.internal(
+  productData,
+  name: r'productDataProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$productDataHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef ProductDataRef
+    = AutoDisposeStreamProviderRef<DocumentSnapshot<Object?>>;
+String _$productSnapshotHash() => r'd05cda3598003514f1c0087d4a0637f069f7c75b';
+
+/// productSnapshot
+///
+/// Copied from [productSnapshot].
+@ProviderFor(productSnapshot)
+final productSnapshotProvider =
+    AutoDisposeProvider<DocumentSnapshot<Object?>?>.internal(
+  productSnapshot,
+  name: r'productSnapshotProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$productSnapshotHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef ProductSnapshotRef = AutoDisposeProviderRef<DocumentSnapshot<Object?>?>;
 String _$userChangesHash() => r'4b418a07a9bb38d37b0f5fe2676bb7f58267eaeb';
 
 ///
@@ -109,6 +145,53 @@ final userNameProvider = AutoDisposeProvider<String?>.internal(
 );
 
 typedef UserNameRef = AutoDisposeProviderRef<String?>;
+String _$productNameHash() => r'86f8a98500bf0bb4efeaeaf3c7f4dff21a342119';
+
+/// See also [ProductName].
+@ProviderFor(ProductName)
+final productNameProvider =
+    AutoDisposeNotifierProvider<ProductName, String>.internal(
+  ProductName.new,
+  name: r'productNameProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$productNameHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$ProductName = AutoDisposeNotifier<String>;
+String _$incrementDialogHash() => r'f4db34981949a1b0e34dc76d7fb92d7ea26a0ed2';
+
+/// See also [IncrementDialog].
+@ProviderFor(IncrementDialog)
+final incrementDialogProvider =
+    AutoDisposeNotifierProvider<IncrementDialog, bool>.internal(
+  IncrementDialog.new,
+  name: r'incrementDialogProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$incrementDialogHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$IncrementDialog = AutoDisposeNotifier<bool>;
+String _$decrementDialogHash() => r'a53f5218df51f8186039f0a2bc568edde1022edb';
+
+/// See also [DecrementDialog].
+@ProviderFor(DecrementDialog)
+final decrementDialogProvider =
+    AutoDisposeNotifierProvider<DecrementDialog, bool>.internal(
+  DecrementDialog.new,
+  name: r'decrementDialogProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$decrementDialogHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$DecrementDialog = AutoDisposeNotifier<bool>;
 String _$loadingStateHash() => r'c5ad5038b4e4a4ebcf07005df266898fef8c3f06';
 
 /// See also [LoadingState].

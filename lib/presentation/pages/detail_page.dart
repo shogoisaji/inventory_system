@@ -7,7 +7,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../application/state/state.dart';
 import '../../infrastructure/firebase/firebase_service.dart';
+import '../dailogs/decrement_dailog.dart';
 import '../dailogs/decrement_snack.dart';
+import '../dailogs/increment_dailog.dart';
 import '../dailogs/increment_snack.dart';
 import '../wedget/account_ditail_view.dart';
 import '../wedget/custom_bottunGradation.dart';
@@ -43,7 +45,7 @@ class DetailPage extends HookConsumerWidget {
           Container(
             width: double.infinity,
             // height: _screenSize.height,
-            color: Color.fromARGB(255, 119, 228, 107),
+            color: Color.fromARGB(255, 136, 238, 125),
           ),
           Positioned(
             left: 50,
@@ -103,7 +105,9 @@ class DetailPage extends HookConsumerWidget {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
+                              return const CircularProgressIndicator(
+                                color: Color.fromARGB(0, 0, 0, 0),
+                              );
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else {
@@ -142,20 +146,10 @@ class DetailPage extends HookConsumerWidget {
                                             borderColor2:
                                                 Color.fromARGB(255, 1, 0, 57),
                                             onPressed: () {
-                                              final snack = IncrementSnack(
-                                                  docName, username);
-                                              final snackBar = SnackBar(
-                                                behavior:
-                                                    SnackBarBehavior.floating,
-                                                duration:
-                                                    const Duration(minutes: 1),
-                                                backgroundColor:
-                                                    const Color.fromARGB(
-                                                        255, 0, 81, 147),
-                                                content: snack,
-                                              );
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(snackBar);
+                                              ref
+                                                  .read(incrementDialogProvider
+                                                      .notifier)
+                                                  .show();
                                             },
                                             width: 50,
                                             height: 55,
@@ -175,20 +169,24 @@ class DetailPage extends HookConsumerWidget {
                                             borderColor2:
                                                 Color.fromARGB(255, 126, 0, 0),
                                             onPressed: () {
-                                              final snack = DecrementSnack(
-                                                  docName, username);
-                                              final snackBar = SnackBar(
-                                                behavior:
-                                                    SnackBarBehavior.floating,
-                                                duration:
-                                                    const Duration(minutes: 1),
-                                                backgroundColor:
-                                                    const Color.fromARGB(
-                                                        255, 160, 30, 30),
-                                                content: snack,
-                                              );
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(snackBar);
+                                              ref
+                                                  .read(decrementDialogProvider
+                                                      .notifier)
+                                                  .show();
+                                              // final snack = DecrementSnack(
+                                              //     docName, username);
+                                              // final snackBar = SnackBar(
+                                              //   behavior:
+                                              //       SnackBarBehavior.floating,
+                                              //   duration:
+                                              //       const Duration(minutes: 1),
+                                              //   backgroundColor:
+                                              //       const Color.fromARGB(
+                                              //           255, 160, 30, 30),
+                                              //   content: snack,
+                                              // );
+                                              // ScaffoldMessenger.of(context)
+                                              //     .showSnackBar(snackBar);
                                             },
                                             width: 50,
                                             height: 55,
@@ -365,12 +363,12 @@ class DetailPage extends HookConsumerWidget {
                                             ),
                                             Row(
                                               children: [
-                                                Icon(
+                                                const Icon(
                                                   Icons.event_note_sharp,
                                                   color: Colors.black38,
                                                 ),
                                                 Text(data['finalInventoryDate'],
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         fontSize: 16.0)),
                                               ],
                                             ),
@@ -408,7 +406,7 @@ class DetailPage extends HookConsumerWidget {
                                                   Icons.person,
                                                   color: Colors.black38,
                                                 ),
-                                                Container(
+                                                SizedBox(
                                                   width: 90,
                                                   child: Text(
                                                       data[
@@ -470,6 +468,37 @@ class DetailPage extends HookConsumerWidget {
           //       alignment: const Alignment(0, -0.3),
           //       child: IncrementDailog(docName, username)),
           // ),
+          if (ref.watch(incrementDialogProvider))
+            // if (true)
+            Expanded(
+              child: ColoredBox(
+                color: Colors.black45,
+                child: Container(
+                  // padding: EdgeInsets.only(top: 250),
+                  alignment: Alignment.center,
+                  child: IncrementDailog(
+                    docName,
+                    username,
+                  ),
+                ),
+              ),
+            ),
+          if (ref.watch(decrementDialogProvider))
+            // if (true)
+            Expanded(
+              child: ColoredBox(
+                color: Colors.black45,
+                child: Container(
+                  // padding: EdgeInsets.only(top: 250),
+                  alignment: Alignment.center,
+                  child: DecrementDailog(
+                    docName,
+                    username,
+                  ),
+                ),
+              ),
+            ),
+
           if (isLoading)
             Container(
               height: _screenSize.height,

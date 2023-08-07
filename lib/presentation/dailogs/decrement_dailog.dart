@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -7,18 +8,25 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../application/state/state.dart';
 import '../../infrastructure/firebase/firebase_service.dart';
 
-class IncrementDailog extends HookConsumerWidget {
+class DecrementDailog extends HookConsumerWidget {
   final String docName;
   final String username;
-  const IncrementDailog(this.docName, this.username, {super.key});
+  const DecrementDailog(this.docName, this.username, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final valueController = useTextEditingController();
+    ref.read(productNameProvider.notifier).change(docName);
+    print((ref.watch(productSnapshotProvider) ?? "none").toString());
+    var productName = "";
+    if (ref.watch(productSnapshotProvider) != null) {
+      productName = ref.watch(productSnapshotProvider)!['productVolume'];
+    } else
+      productName = "";
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.blue,
+        color: const Color.fromRGBO(255, 166, 77, 1),
         borderRadius: BorderRadius.circular(20.0),
       ),
       width: 300,
@@ -26,6 +34,7 @@ class IncrementDailog extends HookConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Text(productName),
           const Text('数量を入力してくださ', style: TextStyle(fontSize: 24)),
           const SizedBox(
             height: 15,
@@ -38,11 +47,10 @@ class IncrementDailog extends HookConsumerWidget {
               controller: valueController,
               decoration: const InputDecoration(
                   filled: true,
-                  fillColor: Color.fromARGB(255, 220, 230, 255),
+                  fillColor: Color.fromARGB(255, 255, 234, 220),
                   helperStyle: TextStyle(color: Colors.white),
                   hintText: "数量",
-                  hintStyle:
-                      TextStyle(color: Color.fromARGB(255, 70, 172, 255))),
+                  hintStyle: TextStyle(color: Colors.orange)),
             ),
           ),
           const SizedBox(
@@ -57,10 +65,10 @@ class IncrementDailog extends HookConsumerWidget {
                 ),
                 child: const Text(
                   'キャンセル',
-                  style: TextStyle(color: Colors.blue),
+                  style: TextStyle(color: Colors.orange),
                 ),
                 onPressed: () {
-                  ref.read(incrementDialogProvider.notifier).hide();
+                  ref.read(decrementDialogProvider.notifier).hide();
                 },
               ),
               const SizedBox(
@@ -68,19 +76,46 @@ class IncrementDailog extends HookConsumerWidget {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 0, 96, 175),
+                  backgroundColor: const Color.fromARGB(255, 230, 92, 6),
                 ),
-                child: const Text('入庫',
+                child: const Text('出庫',
                     style: TextStyle(color: Colors.white, fontSize: 18)),
                 onPressed: () async {
+                  final decrementValue = int.parse(valueController.text);
+                  FirebaseService firebaseService = FirebaseService();
+
+                  final String currentValue = await firebaseService.fetchData(
+                          docName, "productVolume") ??
+                      "0";
+
                   if (valueController.text.isEmpty) {
                     showDialog(
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            backgroundColor: Color.fromARGB(255, 255, 200, 200),
+                            backgroundColor:
+                                const Color.fromARGB(255, 255, 200, 200),
                             title: const Text('数量を入力してください',
                                 style: TextStyle(fontSize: 20)),
+                            actions: [
+                              TextButton(
+                                child: const Text("OK",
+                                    style: TextStyle(fontSize: 20.0)),
+                                onPressed: () => Navigator.pop(context),
+                              ),
+                            ],
+                          );
+                        });
+                  } else if (int.parse(currentValue) >=
+                      int.parse(valueController.text)) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            backgroundColor: Color.fromARGB(255, 255, 200, 200),
+                            title: const Text('在庫不足です',
+                                style: TextStyle(fontSize: 20)),
+                            content: Text('在庫数は $currentValue です'),
                             actions: [
                               TextButton(
                                 child: const Text("OK",
@@ -94,13 +129,13 @@ class IncrementDailog extends HookConsumerWidget {
                     ref.read(loadingStateProvider.notifier).show();
 
                     FirebaseService firebaseService = FirebaseService();
-                    final incrementValue = int.parse(valueController.text);
-                    firebaseService.incrementVolume(
-                        docName, username, incrementValue);
+
+                    firebaseService.decrementVolume(
+                        docName, username, decrementValue);
 
                     Future.delayed(const Duration(seconds: 2), () {
                       context.go('/stock');
-                      ref.read(incrementDialogProvider.notifier).hide();
+                      ref.read(decrementDialogProvider.notifier).hide();
                       ref.read(loadingStateProvider.notifier).hide();
                     });
                   }
