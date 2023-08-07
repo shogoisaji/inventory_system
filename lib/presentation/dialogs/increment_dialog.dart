@@ -7,10 +7,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../application/state/state.dart';
 import '../../infrastructure/firebase/firebase_service.dart';
 
-class IncrementDailog extends HookConsumerWidget {
+class IncrementDialog extends HookConsumerWidget {
   final String docName;
   final String username;
-  const IncrementDailog(this.docName, this.username, {super.key});
+  const IncrementDialog(this.docName, this.username, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_test_various/domain/types/product.dart';
 
 part 'state.g.dart';
 
@@ -12,32 +13,56 @@ const List<String> productTypeList = <String>['部品', '文房具', '機器', '
 
 // productName
 @riverpod
-class ProductName extends _$ProductName {
+class ProductDocument extends _$ProductDocument {
   @override
   String build() => "";
 
   void change(String product) => state = product;
 }
 
-/// productData
+// product Class
 @riverpod
-Stream<DocumentSnapshot<Object>> productData(ProductDataRef ref) {
-  final product = ref.watch(productNameProvider);
-  final productRef =
-      FirebaseFirestore.instance.collection('items').doc(product);
-  return productRef.snapshots();
+Product productData(ProductDataRef ref) {
+  return const Product(
+    productId: 0,
+    productName: "",
+    productType: "",
+    productVolume: "",
+    imageUr1: "",
+    registrationDate: "",
+    finalInventoryDate: "",
+    finalInventoryPerson: "",
+    finalExporterDate: "",
+    finalExporterPerson: "",
+  );
 }
 
-/// productSnapshot
 @riverpod
-DocumentSnapshot<Object?>? productSnapshot(ProductSnapshotRef ref) {
-  final snapshot = ref.watch(productDataProvider);
-  return snapshot.when(
+Future<DocumentSnapshot> fetchProductData(FetchProductDataRef ref) async {
+  final docRef = FirebaseFirestore.instance
+      .collection('items')
+      .doc(ref.watch(productDocumentProvider));
+  return docRef.get();
+}
+
+@riverpod
+DocumentSnapshot? changeProduct(ChangeProductRef ref) {
+  final newData = ref.watch(fetchProductDataProvider);
+  return newData.when(
     loading: () => null,
     error: (_, __) => null,
     data: (d) => d,
   );
 }
+
+// productDocument
+// @riverpod
+// class ProductDocument extends _$ProductDocument {
+//   @override
+//   String build() => "";
+
+//   void change(String product) => state = ref.watch(changeProductProvider)[product];
+// }
 
 // IncrementDialog
 @riverpod

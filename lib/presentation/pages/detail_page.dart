@@ -7,10 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../application/state/state.dart';
 import '../../infrastructure/firebase/firebase_service.dart';
-import '../dailogs/decrement_dailog.dart';
-import '../dailogs/decrement_snack.dart';
-import '../dailogs/increment_dailog.dart';
-import '../dailogs/increment_snack.dart';
 import '../wedget/account_ditail_view.dart';
 import '../wedget/custom_bottunGradation.dart';
 import '../wedget/text_style.dart';
@@ -28,13 +24,16 @@ class DetailPage extends HookConsumerWidget {
     final username = ref.watch(userNameProvider) ?? "";
     final isLoading = ref.watch(loadingStateProvider);
     final _screenSize = MediaQuery.of(context).size;
+    final productData = ref.watch(productDataProvider);
+
+    ref.read(productDocumentProvider).change(docName);
 
     Future<DocumentSnapshot> fetchProductData() async {
-      DocumentSnapshot querySnapshot = await FirebaseFirestore.instance
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
           .collection('items')
           .doc(docName)
           .get();
-      return querySnapshot;
+      return snapshot;
     }
 
     return Scaffold(
@@ -233,33 +232,6 @@ class DetailPage extends HookConsumerWidget {
                                                               service
                                                                   .deleteData(
                                                                       docName);
-                                                          // Navigator.of(context).pop();
-
-                                                          // showDialog(
-                                                          //   context: context,
-                                                          //   builder: (BuildContext
-                                                          //       context) {
-                                                          //     return AlertDialog(
-                                                          //       title: Text(
-                                                          //           'Dialog Title'),
-                                                          //       content: Text(
-                                                          //           deleteComment),
-                                                          //       actions: <Widget>[
-                                                          //         TextButton(
-                                                          //           child:
-                                                          //               Text('Close'),
-                                                          //           onPressed: () {
-                                                          //             Navigator.of(
-                                                          //                     context)
-                                                          //                 .pop();
-                                                          //             context.go(
-                                                          //                 '/stock');
-                                                          //           },
-                                                          //         ),
-                                                          //       ],
-                                                          //     );
-                                                          //   },
-                                                          // );
                                                         },
                                                       ),
                                                     ],
@@ -284,7 +256,6 @@ class DetailPage extends HookConsumerWidget {
                                     AccountDetailView(
                                       width: 85,
                                       typeText: ' ID',
-                                      // textContent: data['productId'].toString(),
                                       textContent:
                                           (data['productId'].toString())
                                               .padLeft(5, '0'),
@@ -476,7 +447,7 @@ class DetailPage extends HookConsumerWidget {
                 child: Container(
                   // padding: EdgeInsets.only(top: 250),
                   alignment: Alignment.center,
-                  child: IncrementDailog(
+                  child: IncrementDialog(
                     docName,
                     username,
                   ),
@@ -491,7 +462,7 @@ class DetailPage extends HookConsumerWidget {
                 child: Container(
                   // padding: EdgeInsets.only(top: 250),
                   alignment: Alignment.center,
-                  child: DecrementDailog(
+                  child: DecrementDialog(
                     docName,
                     username,
                   ),

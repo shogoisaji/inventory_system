@@ -8,21 +8,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../application/state/state.dart';
 import '../../infrastructure/firebase/firebase_service.dart';
 
-class DecrementDailog extends HookConsumerWidget {
+class DecrementDialog extends HookConsumerWidget {
   final String docName;
   final String username;
-  const DecrementDailog(this.docName, this.username, {super.key});
+  const DecrementDialog(this.docName, this.username, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final valueController = useTextEditingController();
-    ref.read(productNameProvider.notifier).change(docName);
-    print((ref.watch(productSnapshotProvider) ?? "none").toString());
-    var productName = "";
-    if (ref.watch(productSnapshotProvider) != null) {
-      productName = ref.watch(productSnapshotProvider)!['productVolume'];
-    } else
-      productName = "";
 
     return Container(
       decoration: BoxDecoration(
@@ -34,7 +27,6 @@ class DecrementDailog extends HookConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(productName),
           const Text('数量を入力してくださ', style: TextStyle(fontSize: 24)),
           const SizedBox(
             height: 15,

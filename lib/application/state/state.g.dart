@@ -6,14 +6,11 @@ part of 'state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$productDataHash() => r'e2009a4d9b5f3df40c3880c67b2c158f95079842';
+String _$productDataHash() => r'706494394e757dd9382742a03c69a014a9227941';
 
-/// productData
-///
-/// Copied from [productData].
+/// See also [productData].
 @ProviderFor(productData)
-final productDataProvider =
-    AutoDisposeStreamProvider<DocumentSnapshot<Object?>>.internal(
+final productDataProvider = AutoDisposeProvider<Product>.internal(
   productData,
   name: r'productDataProvider',
   debugGetCreateSourceHash:
@@ -22,26 +19,40 @@ final productDataProvider =
   allTransitiveDependencies: null,
 );
 
-typedef ProductDataRef
-    = AutoDisposeStreamProviderRef<DocumentSnapshot<Object?>>;
-String _$productSnapshotHash() => r'd05cda3598003514f1c0087d4a0637f069f7c75b';
+typedef ProductDataRef = AutoDisposeProviderRef<Product>;
+String _$fetchProductDataHash() => r'c52b4eb5fb04992b64be41ea59123d5d42727675';
 
-/// productSnapshot
-///
-/// Copied from [productSnapshot].
-@ProviderFor(productSnapshot)
-final productSnapshotProvider =
-    AutoDisposeProvider<DocumentSnapshot<Object?>?>.internal(
-  productSnapshot,
-  name: r'productSnapshotProvider',
+/// See also [fetchProductData].
+@ProviderFor(fetchProductData)
+final fetchProductDataProvider =
+    AutoDisposeFutureProvider<DocumentSnapshot<Object?>>.internal(
+  fetchProductData,
+  name: r'fetchProductDataProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$productSnapshotHash,
+      : _$fetchProductDataHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef ProductSnapshotRef = AutoDisposeProviderRef<DocumentSnapshot<Object?>?>;
+typedef FetchProductDataRef
+    = AutoDisposeFutureProviderRef<DocumentSnapshot<Object?>>;
+String _$changeProductHash() => r'c20c37b551981034ba596fddf6dec6f68a56a652';
+
+/// See also [changeProduct].
+@ProviderFor(changeProduct)
+final changeProductProvider =
+    AutoDisposeProvider<DocumentSnapshot<Object?>?>.internal(
+  changeProduct,
+  name: r'changeProductProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$changeProductHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef ChangeProductRef = AutoDisposeProviderRef<DocumentSnapshot<Object?>?>;
 String _$userChangesHash() => r'4b418a07a9bb38d37b0f5fe2676bb7f58267eaeb';
 
 ///
@@ -145,21 +156,22 @@ final userNameProvider = AutoDisposeProvider<String?>.internal(
 );
 
 typedef UserNameRef = AutoDisposeProviderRef<String?>;
-String _$productNameHash() => r'86f8a98500bf0bb4efeaeaf3c7f4dff21a342119';
+String _$productDocumentHash() => r'ba4ba000400f14170090c38f49a98ea799e289d7';
 
-/// See also [ProductName].
-@ProviderFor(ProductName)
-final productNameProvider =
-    AutoDisposeNotifierProvider<ProductName, String>.internal(
-  ProductName.new,
-  name: r'productNameProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$productNameHash,
+/// See also [ProductDocument].
+@ProviderFor(ProductDocument)
+final productDocumentProvider =
+    AutoDisposeNotifierProvider<ProductDocument, String>.internal(
+  ProductDocument.new,
+  name: r'productDocumentProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$productDocumentHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ProductName = AutoDisposeNotifier<String>;
+typedef _$ProductDocument = AutoDisposeNotifier<String>;
 String _$incrementDialogHash() => r'f4db34981949a1b0e34dc76d7fb92d7ea26a0ed2';
 
 /// See also [IncrementDialog].

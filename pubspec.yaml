@@ -25,6 +25,7 @@ dependencies:
   cloud_firestore:
   image_picker:
   get: ^4.6.5
+  freezed:
 
 dev_dependencies:
   flutter_test:
@@ -32,6 +33,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   build_runner:
   riverpod_generator:
+  freezed_annotation:
 
 flutter:
   uses-material-design: true

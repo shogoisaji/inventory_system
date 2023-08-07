@@ -20,6 +20,11 @@ class FirebaseService {
     return "0";
   }
 
+  Future<DocumentSnapshot> fetchProductData(String docName) async {
+    DocumentSnapshot snapshot = await db.collection('items').doc(docName).get();
+    return snapshot;
+  }
+
 // productId連番
   Future<int> incrementCounter() async {
     DocumentReference counterRef = db.collection('settings').doc('settings');
