@@ -81,8 +81,10 @@ class StockPage extends ConsumerWidget {
         children: [
           Column(children: [
             Container(
+              width: _screenSize.width,
+              height: 95,
               decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 190, 150, 129),
+                color: Color.fromARGB(255, 210, 170, 144),
                 boxShadow: [
                   BoxShadow(
                     color: Color.fromARGB(255, 130, 130, 130),
@@ -92,40 +94,44 @@ class StockPage extends ConsumerWidget {
                   ),
                 ],
               ),
-              height: 95,
-              child: ListView.builder(
-                itemCount: typeList.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (_, index) {
-                  return Row(
-                    children: [
-                      const SizedBox(width: 15),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+              child: Center(
+                child: SizedBox(
+                  width: 60 * 5 + 15 * 4,
+                  child: ListView.builder(
+                    itemCount: typeList.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (_, index) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(
-                            height: 10,
+                          if (index != 0) const SizedBox(width: 15),
+                          Column(
+                            children: [
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              CustomButtonCircle(
+                                onPressed: () {
+                                  ref
+                                      .read(stockTypeProvider.notifier)
+                                      .changeType(index);
+                                },
+                                assetName:
+                                    "images/${typeList.values.elementAt(index)}.png",
+                              ),
+                              NormalText(
+                                  text: typeList.keys.elementAt(index),
+                                  size: 14,
+                                  color: index == ref.watch(stockTypeProvider)
+                                      ? Colors.black.withOpacity(1.0)
+                                      : Colors.black.withOpacity(0.3)),
+                            ],
                           ),
-                          CustomButtonCircle(
-                            onPressed: () {
-                              ref
-                                  .read(stockTypeProvider.notifier)
-                                  .changeType(index);
-                            },
-                            assetName:
-                                "images/${typeList.values.elementAt(index)}.png",
-                          ),
-                          NormalText(
-                              text: typeList.keys.elementAt(index),
-                              size: 14,
-                              color: index == ref.watch(stockTypeProvider)
-                                  ? Colors.black.withOpacity(1.0)
-                                  : Colors.black.withOpacity(0.3)),
                         ],
-                      ),
-                    ],
-                  );
-                },
+                      );
+                    },
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 5),
