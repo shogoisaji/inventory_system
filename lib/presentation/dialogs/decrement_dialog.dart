@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -60,7 +59,7 @@ class DecrementDialog extends HookConsumerWidget {
                   style: TextStyle(color: Colors.orange),
                 ),
                 onPressed: () {
-                  ref.read(decrementDialogProvider.notifier).hide();
+                  ref.read(decrementDialogStateProvider.notifier).hide();
                 },
               ),
               const SizedBox(
@@ -127,7 +126,7 @@ class DecrementDialog extends HookConsumerWidget {
 
                     Future.delayed(const Duration(seconds: 2), () {
                       context.go('/stock');
-                      ref.read(decrementDialogProvider.notifier).hide();
+                      ref.read(decrementDialogStateProvider.notifier).hide();
                       ref.read(loadingStateProvider.notifier).hide();
                     });
                   }

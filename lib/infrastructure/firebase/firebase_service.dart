@@ -20,7 +20,7 @@ class FirebaseService {
     return "0";
   }
 
-  Future<DocumentSnapshot> fetchProductData(String docName) async {
+  Future<DocumentSnapshot>? fetchProductData(String docName) async {
     DocumentSnapshot snapshot = await db.collection('items').doc(docName).get();
     return snapshot;
   }
@@ -81,14 +81,11 @@ class FirebaseService {
 
 // FireStoreのデータを削除する
   Future<String> deleteData(String doc) async {
-    String deleteComment;
     try {
       await FirebaseFirestore.instance.collection('items').doc(doc).delete();
-      print("'$doc'を削除しました");
-      return 'success';
+      return "'$doc'を削除しました";
     } catch (error) {
-      print("Error: $error");
-      return 'error';
+      return "Error: $error";
     }
   }
 

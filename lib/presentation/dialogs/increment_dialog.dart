@@ -60,7 +60,7 @@ class IncrementDialog extends HookConsumerWidget {
                   style: TextStyle(color: Colors.blue),
                 ),
                 onPressed: () {
-                  ref.read(incrementDialogProvider.notifier).hide();
+                  ref.read(incrementDialogStateProvider.notifier).hide();
                 },
               ),
               const SizedBox(
@@ -100,7 +100,7 @@ class IncrementDialog extends HookConsumerWidget {
 
                     Future.delayed(const Duration(seconds: 2), () {
                       context.go('/stock');
-                      ref.read(incrementDialogProvider.notifier).hide();
+                      ref.read(incrementDialogStateProvider.notifier).hide();
                       ref.read(loadingStateProvider.notifier).hide();
                     });
                   }

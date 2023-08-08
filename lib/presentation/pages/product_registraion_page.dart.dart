@@ -216,7 +216,7 @@ class ProductRegistrationPage extends HookConsumerWidget {
                 textSize: 16,
                 textColor: Colors.white),
             const SizedBox(
-              height: 30,
+              height: 20,
             ),
             CustomButtonGradation(
                 text: '在庫一覧',

@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_test_various/domain/types/product.dart';
 
 part 'state.g.dart';
 
@@ -15,58 +15,34 @@ const List<String> productTypeList = <String>['部品', '文房具', '機器', '
 @riverpod
 class ProductDocument extends _$ProductDocument {
   @override
-  String build() => "";
+  String build() => "None";
 
-  void change(String product) => state = product;
+  void changeDocument(String product) => state = product;
 }
 
-// product Class
+/// productData
 @riverpod
-Product productData(ProductDataRef ref) {
-  return const Product(
-    productId: 0,
-    productName: "",
-    productType: "",
-    productVolume: "",
-    imageUr1: "",
-    registrationDate: "",
-    finalInventoryDate: "",
-    finalInventoryPerson: "",
-    finalExporterDate: "",
-    finalExporterPerson: "",
-  );
+Stream<DocumentSnapshot<Object>?> productFieldData(ProductFieldDataRef ref) {
+  final productDocs = ref.watch(productDocumentProvider);
+  final productRef =
+      FirebaseFirestore.instance.collection('items').doc(productDocs);
+  return productRef.snapshots();
 }
 
+/// productSnapshot
 @riverpod
-Future<DocumentSnapshot> fetchProductData(FetchProductDataRef ref) async {
-  final docRef = FirebaseFirestore.instance
-      .collection('items')
-      .doc(ref.watch(productDocumentProvider));
-  return docRef.get();
-}
-
-@riverpod
-DocumentSnapshot? changeProduct(ChangeProductRef ref) {
-  final newData = ref.watch(fetchProductDataProvider);
-  return newData.when(
+DocumentSnapshot<Object?>? productSnapshot(ProductSnapshotRef ref) {
+  final snapshot = ref.watch(productFieldDataProvider);
+  return snapshot.when(
     loading: () => null,
     error: (_, __) => null,
     data: (d) => d,
   );
 }
 
-// productDocument
-// @riverpod
-// class ProductDocument extends _$ProductDocument {
-//   @override
-//   String build() => "";
-
-//   void change(String product) => state = ref.watch(changeProductProvider)[product];
-// }
-
 // IncrementDialog
 @riverpod
-class IncrementDialog extends _$IncrementDialog {
+class IncrementDialogState extends _$IncrementDialogState {
   @override
   bool build() => false;
 
@@ -77,7 +53,7 @@ class IncrementDialog extends _$IncrementDialog {
 
 // DecrementDialog
 @riverpod
-class DecrementDialog extends _$DecrementDialog {
+class DecrementDialogState extends _$DecrementDialogState {
   @override
   bool build() => false;
 
@@ -107,6 +83,8 @@ class ProductType extends _$ProductType {
 class StockType extends _$StockType {
   @override
   int build() => 0;
+
+  void changeType(int index) => state = index;
 }
 
 @riverpod
@@ -178,29 +156,6 @@ String? userName(UserNameRef ref) {
     data: (d) => d['name'],
   );
 }
-
-// @riverpod
-// Stream<DocumentSnapshot<Map<String, dynamic>>?> userData(UserDataRef ref) {
-//   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-//   final user = ref.watch(userProvider);
-//   final userId = user?.uid;
-
-//   if(userId != null) {
-//     return _firestore.collection('users').doc(userId).snapshots();
-//   } else {
-//     return Stream.value(null);
-//   }
-// }
-
-// @riverpod
-// String userName(UserNameRef ref) {
-//   final userData = ref.watch(userDataProvider);
-//     return userData.when(
-//       data: (d) => d!=null?d['userName']:"NoName",
-//       loading: () => 'loading',
-//       error: (_, __) => 'Error',
-//     );
-// }
 
 /// ---------------------------------------------------------
 /// ユーザーIDを使えるスコープ    >> router/user_id_scope.dart

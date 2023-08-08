@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_various/presentation/pages/account_page.dart';
+import 'package:flutter_test_various/presentation/pages/test_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -18,6 +19,7 @@ class PagePath {
   static const stock = '/stock';
   static const account = '/account';
   static const detail = '/detail';
+  static const test = '/test';
 }
 
 @riverpod
@@ -49,11 +51,15 @@ GoRouter router(RouterRef ref) {
         ),
         GoRoute(
           path: PagePath.account,
-          builder: (_, __) => AccountPage(),
+          builder: (_, __) => const AccountPage(),
         ),
         GoRoute(
           path: PagePath.detail,
-          builder: (_, __) => DetailPage(),
+          builder: (_, __) => const DetailPage(),
+        ),
+        GoRoute(
+          path: PagePath.test,
+          builder: (_, __) => const TestPage(),
         ),
       ],
     ),

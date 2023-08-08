@@ -19,9 +19,8 @@ mixin _$Product {
   int get productId => throw _privateConstructorUsedError;
   String get productName => throw _privateConstructorUsedError;
   String get productType => throw _privateConstructorUsedError;
-  String get productVolume => throw _privateConstructorUsedError;
-  String get imageUr1 => throw _privateConstructorUsedError;
-  String get registrationDate => throw _privateConstructorUsedError;
+  int get productVolume => throw _privateConstructorUsedError;
+  String get imageUrl => throw _privateConstructorUsedError;
   String get finalInventoryDate => throw _privateConstructorUsedError;
   String get finalInventoryPerson => throw _privateConstructorUsedError;
   String get finalExporterDate => throw _privateConstructorUsedError;
@@ -40,9 +39,8 @@ abstract class $ProductCopyWith<$Res> {
       {int productId,
       String productName,
       String productType,
-      String productVolume,
-      String imageUr1,
-      String registrationDate,
+      int productVolume,
+      String imageUrl,
       String finalInventoryDate,
       String finalInventoryPerson,
       String finalExporterDate,
@@ -66,8 +64,7 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? productName = null,
     Object? productType = null,
     Object? productVolume = null,
-    Object? imageUr1 = null,
-    Object? registrationDate = null,
+    Object? imageUrl = null,
     Object? finalInventoryDate = null,
     Object? finalInventoryPerson = null,
     Object? finalExporterDate = null,
@@ -89,14 +86,10 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
       productVolume: null == productVolume
           ? _value.productVolume
           : productVolume // ignore: cast_nullable_to_non_nullable
-              as String,
-      imageUr1: null == imageUr1
-          ? _value.imageUr1
-          : imageUr1 // ignore: cast_nullable_to_non_nullable
-              as String,
-      registrationDate: null == registrationDate
-          ? _value.registrationDate
-          : registrationDate // ignore: cast_nullable_to_non_nullable
+              as int,
+      imageUrl: null == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
               as String,
       finalInventoryDate: null == finalInventoryDate
           ? _value.finalInventoryDate
@@ -129,9 +122,8 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
       {int productId,
       String productName,
       String productType,
-      String productVolume,
-      String imageUr1,
-      String registrationDate,
+      int productVolume,
+      String imageUrl,
       String finalInventoryDate,
       String finalInventoryPerson,
       String finalExporterDate,
@@ -152,8 +144,7 @@ class __$$_ProductCopyWithImpl<$Res>
     Object? productName = null,
     Object? productType = null,
     Object? productVolume = null,
-    Object? imageUr1 = null,
-    Object? registrationDate = null,
+    Object? imageUrl = null,
     Object? finalInventoryDate = null,
     Object? finalInventoryPerson = null,
     Object? finalExporterDate = null,
@@ -175,14 +166,10 @@ class __$$_ProductCopyWithImpl<$Res>
       productVolume: null == productVolume
           ? _value.productVolume
           : productVolume // ignore: cast_nullable_to_non_nullable
-              as String,
-      imageUr1: null == imageUr1
-          ? _value.imageUr1
-          : imageUr1 // ignore: cast_nullable_to_non_nullable
-              as String,
-      registrationDate: null == registrationDate
-          ? _value.registrationDate
-          : registrationDate // ignore: cast_nullable_to_non_nullable
+              as int,
+      imageUrl: null == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
               as String,
       finalInventoryDate: null == finalInventoryDate
           ? _value.finalInventoryDate
@@ -212,8 +199,7 @@ class _$_Product implements _Product {
       required this.productName,
       required this.productType,
       required this.productVolume,
-      required this.imageUr1,
-      required this.registrationDate,
+      required this.imageUrl,
       required this.finalInventoryDate,
       required this.finalInventoryPerson,
       required this.finalExporterDate,
@@ -226,11 +212,9 @@ class _$_Product implements _Product {
   @override
   final String productType;
   @override
-  final String productVolume;
+  final int productVolume;
   @override
-  final String imageUr1;
-  @override
-  final String registrationDate;
+  final String imageUrl;
   @override
   final String finalInventoryDate;
   @override
@@ -242,7 +226,7 @@ class _$_Product implements _Product {
 
   @override
   String toString() {
-    return 'Product(productId: $productId, productName: $productName, productType: $productType, productVolume: $productVolume, imageUr1: $imageUr1, registrationDate: $registrationDate, finalInventoryDate: $finalInventoryDate, finalInventoryPerson: $finalInventoryPerson, finalExporterDate: $finalExporterDate, finalExporterPerson: $finalExporterPerson)';
+    return 'Product(productId: $productId, productName: $productName, productType: $productType, productVolume: $productVolume, imageUrl: $imageUrl, finalInventoryDate: $finalInventoryDate, finalInventoryPerson: $finalInventoryPerson, finalExporterDate: $finalExporterDate, finalExporterPerson: $finalExporterPerson)';
   }
 
   @override
@@ -258,10 +242,8 @@ class _$_Product implements _Product {
                 other.productType == productType) &&
             (identical(other.productVolume, productVolume) ||
                 other.productVolume == productVolume) &&
-            (identical(other.imageUr1, imageUr1) ||
-                other.imageUr1 == imageUr1) &&
-            (identical(other.registrationDate, registrationDate) ||
-                other.registrationDate == registrationDate) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl) &&
             (identical(other.finalInventoryDate, finalInventoryDate) ||
                 other.finalInventoryDate == finalInventoryDate) &&
             (identical(other.finalInventoryPerson, finalInventoryPerson) ||
@@ -279,8 +261,7 @@ class _$_Product implements _Product {
       productName,
       productType,
       productVolume,
-      imageUr1,
-      registrationDate,
+      imageUrl,
       finalInventoryDate,
       finalInventoryPerson,
       finalExporterDate,
@@ -298,9 +279,8 @@ abstract class _Product implements Product {
       {required final int productId,
       required final String productName,
       required final String productType,
-      required final String productVolume,
-      required final String imageUr1,
-      required final String registrationDate,
+      required final int productVolume,
+      required final String imageUrl,
       required final String finalInventoryDate,
       required final String finalInventoryPerson,
       required final String finalExporterDate,
@@ -313,11 +293,9 @@ abstract class _Product implements Product {
   @override
   String get productType;
   @override
-  String get productVolume;
+  int get productVolume;
   @override
-  String get imageUr1;
-  @override
-  String get registrationDate;
+  String get imageUrl;
   @override
   String get finalInventoryDate;
   @override

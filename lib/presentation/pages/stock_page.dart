@@ -6,6 +6,7 @@ import 'package:flutter_test_various/presentation/wedget/text_style.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../application/state/state.dart';
+import '../../infrastructure/firebase/firebase_service.dart';
 import '../wedget/custom_bottun.dart';
 
 class StockPage extends ConsumerWidget {
@@ -25,6 +26,10 @@ class StockPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final username = ref.watch(userNameProvider) ?? "";
+    final bool isLoading = ref.watch(loadingStateProvider);
+    final productSnapshot = ref.watch(productSnapshotProvider);
+    final docName = ref.watch(productDocumentProvider);
+
     final _screenSize = MediaQuery.of(context).size;
 
     Future<List<DocumentSnapshot>> fetchFilteredData() async {
@@ -77,7 +82,7 @@ class StockPage extends ConsumerWidget {
           Column(children: [
             Container(
               decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 231, 200, 183),
+                color: Color.fromARGB(255, 190, 150, 129),
                 boxShadow: [
                   BoxShadow(
                     color: Color.fromARGB(255, 130, 130, 130),
@@ -103,8 +108,9 @@ class StockPage extends ConsumerWidget {
                           ),
                           CustomButtonCircle(
                             onPressed: () {
-                              ref.read(stockTypeProvider.notifier).state =
-                                  index;
+                              ref
+                                  .read(stockTypeProvider.notifier)
+                                  .changeType(index);
                             },
                             assetName:
                                 "images/${typeList.values.elementAt(index)}.png",
@@ -124,7 +130,6 @@ class StockPage extends ConsumerWidget {
             ),
             const SizedBox(height: 5),
             Expanded(
-              // height: _screenSize.height - 260,
               child: FutureBuilder<List<DocumentSnapshot>>(
                   future: fetchFilteredData(),
                   builder: (context, snapshot) {
@@ -247,16 +252,26 @@ class StockPage extends ConsumerWidget {
                                   CustomButton(
                                     text: '詳細',
                                     mainColor:
-                                        Color.fromARGB(255, 106, 219, 117),
+                                        Color.fromARGB(255, 160, 232, 167),
                                     shadowColor: Color.fromARGB(255, 0, 0, 0)
                                         .withOpacity(0.2),
-                                    onPressed: () {
-                                      ref
-                                          .read(detailProductProvider.notifier)
-                                          .state = data['productId'].toString();
-                                      debugPrint(
-                                          ref.watch(detailProductProvider));
-                                      context.go('/detail');
+                                    onPressed: () async {
+                                      final FirebaseService service =
+                                          FirebaseService();
+                                      final fetchData =
+                                          await service.fetchProductData(
+                                              "product${data['productId'].toString()}");
+                                      if (context.mounted &&
+                                          fetchData != null) {
+                                        ref
+                                            .read(productDocumentProvider
+                                                .notifier)
+                                            .changeDocument(
+                                                "product${fetchData['productId'].toString()}");
+                                        context.go('/detail');
+                                      } else {
+                                        debugPrint("fetch error");
+                                      }
                                     },
                                     width: 60,
                                     height: 70,
@@ -277,7 +292,6 @@ class StockPage extends ConsumerWidget {
           ]),
           Align(
               alignment: Alignment.bottomCenter,
-              // bottom: 0,
               child: Container(
                 height: 50,
                 decoration: BoxDecoration(
@@ -294,6 +308,18 @@ class StockPage extends ConsumerWidget {
                   ],
                 )),
               )),
+          if (isLoading)
+            // if (true)
+            Container(
+              height: _screenSize.height,
+              width: _screenSize.width,
+              decoration: const BoxDecoration(color: Colors.black54),
+              child: const Align(
+                alignment: Alignment(0, -0.5),
+                child: SizedBox(
+                    width: 50, height: 50, child: CircularProgressIndicator()),
+              ),
+            ),
         ],
       ),
     );
