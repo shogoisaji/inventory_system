@@ -14,7 +14,6 @@ class LoadingPage extends ConsumerWidget {
           return Stack(
             children: [
               child!,
-              // ローディングを表示する
               if (isLoading)
                 const ColoredBox(
                   color: Colors.black26,

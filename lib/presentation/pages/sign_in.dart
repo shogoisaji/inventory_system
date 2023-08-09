@@ -153,7 +153,7 @@ class SignInPage extends StatelessWidget {
                       },
                     );
                   }
-                } on FirebaseAuthException catch (e) {
+                } on FirebaseAuthException catch (_) {
                   showDialog(
                     context: context,
                     builder: (context) {
@@ -211,7 +211,7 @@ class SignInPage extends StatelessWidget {
                               const Text('必須',
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.red)),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               TextField(
@@ -223,7 +223,7 @@ class SignInPage extends StatelessWidget {
                               const Text('必須',
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.red)),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               TextField(
@@ -234,7 +234,7 @@ class SignInPage extends StatelessWidget {
                               const Text('必須',
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.red)),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               TextField(
@@ -281,7 +281,6 @@ class SignInPage extends StatelessWidget {
                                   },
                                 );
                               } else {
-                                // Handle the submission logic here
                                 AuthService authService = AuthService();
                                 var user = await authService.createUser(
                                   _nameController.text,
@@ -309,7 +308,7 @@ class SignInPage extends StatelessWidget {
               try {
                 final service = AuthService();
                 await service.signIn('sample@gmail.com', 'password');
-              } on FirebaseAuthException catch (e) {
+              } on FirebaseAuthException catch (_) {
                 debugPrint("signerror");
                 showDialog(
                   context: context,

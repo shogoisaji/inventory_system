@@ -9,20 +9,15 @@ class FirebaseService {
   String currentDate = getCurrentDate();
 
 // firestoreデータ取得
-  Future<String?> fetchData(String docName, String valueName) async {
+  Future<Map<String, dynamic>?> fetchProductData(String docName) async {
     final docRef = db.collection('items').doc(docName);
-    await db.runTransaction((Transaction tx) async {
-      DocumentSnapshot doc = await tx.get(docRef);
-      if (doc.exists) {
-        return doc.get(valueName);
-      }
-    });
-    return "0";
-  }
+    DocumentSnapshot? docSnap;
 
-  Future<DocumentSnapshot>? fetchProductData(String docName) async {
-    DocumentSnapshot snapshot = await db.collection('items').doc(docName).get();
-    return snapshot;
+    await db.runTransaction((Transaction tx) async {
+      docSnap = await tx.get(docRef);
+    });
+
+    return docSnap?.data() as Map<String, dynamic>?;
   }
 
 // productId連番
@@ -50,12 +45,10 @@ class FirebaseService {
 // Firestoreにデータを保存する関数
   Future<void> upLoad(String productName, String productType, int productVolume,
       String userName, File? imageFile, String? fileName) async {
-    final imageUrl = "";
-    print(imageFile != null ? "exist" : "null");
+    String imageUrl = "";
     int nextId = await incrementCounter();
     if (imageFile != null && fileName != null) {
-      final imageUrl =
-          await uploadImage(imageFile, nextId.toString() + fileName);
+      imageUrl = await uploadImage(imageFile, nextId.toString() + fileName);
     }
 
     await FirebaseFirestore.instance
@@ -91,8 +84,9 @@ class FirebaseService {
 
 // Cloud Storageに画像をアップロードする関数
   Future<String> uploadImage(File imageFile, String fileName) async {
-    Reference ref = FirebaseStorage.instance.ref().child('images/$fileName');
-    UploadTask uploadTask = ref.putFile(imageFile);
+    Reference reference =
+        FirebaseStorage.instance.ref().child('images/$fileName');
+    UploadTask uploadTask = reference.putFile(imageFile);
 
     TaskSnapshot snapshot = await uploadTask.whenComplete(() {});
     String downloadUrl = await snapshot.ref.getDownloadURL();
@@ -101,9 +95,10 @@ class FirebaseService {
   }
 
 // ImagePickerを使って画像選択
-  Future<File?> pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+  Future<File?> pickImage(String imageType) async {
+    final pickedFile = await ImagePicker().pickImage(
+        source:
+            imageType == "gallery" ? ImageSource.gallery : ImageSource.camera);
 
     if (pickedFile != null) {
       print(pickedFile.path);
@@ -146,8 +141,8 @@ class FirebaseService {
           docRef,
           {
             'productVolume': currentValue - decrementValue,
-            'finalInventoryPerson': username,
-            'finalInventoryDate': currentDate,
+            'finalExporterPerson': username,
+            'finalExporterDate': currentDate,
           },
         );
       }

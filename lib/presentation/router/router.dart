@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_various/presentation/pages/account_page.dart';
-import 'package:flutter_test_various/presentation/pages/test_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -19,6 +18,7 @@ class PagePath {
   static const stock = '/stock';
   static const account = '/account';
   static const detail = '/detail';
+  ////////////test
   static const test = '/test';
 }
 
@@ -36,7 +36,6 @@ GoRouter router(RouterRef ref) {
     ShellRoute(
       builder: (_, __, child) => UserIdScope(child: child),
       routes: [
-        // ホーム画面
         GoRoute(
           path: PagePath.productRegistration,
           builder: (_, __) => ProductRegistrationPage(),
@@ -56,10 +55,6 @@ GoRouter router(RouterRef ref) {
         GoRoute(
           path: PagePath.detail,
           builder: (_, __) => const DetailPage(),
-        ),
-        GoRoute(
-          path: PagePath.test,
-          builder: (_, __) => const TestPage(),
         ),
       ],
     ),
@@ -97,26 +92,4 @@ GoRouter router(RouterRef ref) {
     redirect: redirect,
     refreshListenable: listenable,
   );
-}
-
-/// ---------------------------------------------------------
-/// アプリ本体    >> router/app.dart
-/// ---------------------------------------------------------
-class MyApp extends ConsumerWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider);
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      routerConfig: router,
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          color: Color.fromARGB(255, 94, 100, 114),
-        ),
-        scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
-      ),
-    );
-  }
 }

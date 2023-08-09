@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -20,25 +19,25 @@ class ProductDocument extends _$ProductDocument {
   void changeDocument(String product) => state = product;
 }
 
-/// productData
-@riverpod
-Stream<DocumentSnapshot<Object>?> productFieldData(ProductFieldDataRef ref) {
-  final productDocs = ref.watch(productDocumentProvider);
-  final productRef =
-      FirebaseFirestore.instance.collection('items').doc(productDocs);
-  return productRef.snapshots();
-}
+// /// productData
+// @riverpod
+// Stream<DocumentSnapshot<Object>?> productFieldData(ProductFieldDataRef ref) {
+//   final productDocs = ref.watch(productDocumentProvider);
+//   final productRef =
+//       FirebaseFirestore.instance.collection('items').doc(productDocs);
+//   return productRef.snapshots();
+// }
 
-/// productSnapshot
-@riverpod
-DocumentSnapshot<Object?>? productSnapshot(ProductSnapshotRef ref) {
-  final snapshot = ref.watch(productFieldDataProvider);
-  return snapshot.when(
-    loading: () => null,
-    error: (_, __) => null,
-    data: (d) => d,
-  );
-}
+// /// productSnapshot
+// @riverpod
+// DocumentSnapshot<Object?>? productSnapshot(ProductSnapshotRef ref) {
+//   final snapshot = ref.watch(productFieldDataProvider);
+//   return snapshot.when(
+//     loading: () => null,
+//     error: (_, __) => null,
+//     data: (d) => d,
+//   );
+// }
 
 // IncrementDialog
 @riverpod
@@ -62,7 +61,7 @@ class DecrementDialogState extends _$DecrementDialogState {
   void hide() => state = false;
 }
 
-// ローディング
+// Loading
 @riverpod
 class LoadingState extends _$LoadingState {
   @override
@@ -73,12 +72,14 @@ class LoadingState extends _$LoadingState {
   void hide() => state = false;
 }
 
+// productの種類
 @riverpod
 class ProductType extends _$ProductType {
   @override
   String build() => productTypeList[0];
 }
 
+// product の種類index
 @riverpod
 class StockType extends _$StockType {
   @override
@@ -88,15 +89,13 @@ class StockType extends _$StockType {
 }
 
 @riverpod
-class DetailProduct extends _$DetailProduct {
-  @override
-  String build() => 'none';
-}
-
-@riverpod
 class ImageFile extends _$ImageFile {
   @override
   File? build() => null;
+
+  void chageFile(File file) {
+    state = file;
+  }
 }
 
 ///

@@ -6,8 +6,8 @@ import 'package:flutter_test_various/presentation/wedget/text_style.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../application/state/state.dart';
-import '../../infrastructure/firebase/firebase_service.dart';
 import '../wedget/custom_bottun.dart';
+import '../wedget/show_image.dart';
 
 class StockPage extends ConsumerWidget {
   StockPage({Key? key}) : super(key: key);
@@ -27,8 +27,6 @@ class StockPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final username = ref.watch(userNameProvider) ?? "";
     final bool isLoading = ref.watch(loadingStateProvider);
-    final productSnapshot = ref.watch(productSnapshotProvider);
-    final docName = ref.watch(productDocumentProvider);
 
     final _screenSize = MediaQuery.of(context).size;
 
@@ -175,20 +173,8 @@ class StockPage extends ConsumerWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    height: 70,
-                                    width: 70,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                            data['imageUrl'] != ""
-                                                ? data['imageUrl']
-                                                : nullUrl,
-                                          ),
-                                          fit: BoxFit.cover),
-                                    ),
-                                  ),
+                                  showImage(data['imageUrl'] != "",
+                                      data['imageUrl'], 70, 70),
                                   const SizedBox(
                                     width: 20,
                                   ),
@@ -261,23 +247,15 @@ class StockPage extends ConsumerWidget {
                                         Color.fromARGB(255, 160, 232, 167),
                                     shadowColor: Color.fromARGB(255, 0, 0, 0)
                                         .withOpacity(0.2),
-                                    onPressed: () async {
-                                      final FirebaseService service =
-                                          FirebaseService();
-                                      final fetchData =
-                                          await service.fetchProductData(
-                                              "product${data['productId'].toString()}");
-                                      if (context.mounted &&
-                                          fetchData != null) {
-                                        ref
-                                            .read(productDocumentProvider
-                                                .notifier)
-                                            .changeDocument(
-                                                "product${fetchData['productId'].toString()}");
-                                        context.go('/detail');
-                                      } else {
-                                        debugPrint("fetch error");
-                                      }
+                                    onPressed: () {
+                                      ref
+                                          .read(
+                                              productDocumentProvider.notifier)
+                                          .changeDocument(
+                                              'product${data["productId"]}');
+                                      debugPrint(
+                                          ref.watch(productDocumentProvider));
+                                      context.go('/detail');
                                     },
                                     width: 60,
                                     height: 70,
@@ -315,7 +293,6 @@ class StockPage extends ConsumerWidget {
                 )),
               )),
           if (isLoading)
-            // if (true)
             Container(
               height: _screenSize.height,
               width: _screenSize.width,

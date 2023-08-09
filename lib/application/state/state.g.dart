@@ -6,43 +6,6 @@ part of 'state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$productFieldDataHash() => r'1d03b6668efbfdf9830fd81d45eb176751e2d279';
-
-/// productData
-///
-/// Copied from [productFieldData].
-@ProviderFor(productFieldData)
-final productFieldDataProvider =
-    AutoDisposeStreamProvider<DocumentSnapshot<Object>?>.internal(
-  productFieldData,
-  name: r'productFieldDataProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$productFieldDataHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef ProductFieldDataRef
-    = AutoDisposeStreamProviderRef<DocumentSnapshot<Object>?>;
-String _$productSnapshotHash() => r'85f9d3c2e06faf38fdd707c587e6d8e1b0aaeb53';
-
-/// productSnapshot
-///
-/// Copied from [productSnapshot].
-@ProviderFor(productSnapshot)
-final productSnapshotProvider =
-    AutoDisposeProvider<DocumentSnapshot<Object?>?>.internal(
-  productSnapshot,
-  name: r'productSnapshotProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$productSnapshotHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef ProductSnapshotRef = AutoDisposeProviderRef<DocumentSnapshot<Object?>?>;
 String _$userChangesHash() => r'4b418a07a9bb38d37b0f5fe2676bb7f58267eaeb';
 
 ///
@@ -240,23 +203,7 @@ final stockTypeProvider = AutoDisposeNotifierProvider<StockType, int>.internal(
 );
 
 typedef _$StockType = AutoDisposeNotifier<int>;
-String _$detailProductHash() => r'5f9b211b37d20f6a34a9aeabb75c8618419eb694';
-
-/// See also [DetailProduct].
-@ProviderFor(DetailProduct)
-final detailProductProvider =
-    AutoDisposeNotifierProvider<DetailProduct, String>.internal(
-  DetailProduct.new,
-  name: r'detailProductProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$detailProductHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$DetailProduct = AutoDisposeNotifier<String>;
-String _$imageFileHash() => r'74809ddb6fe8f15e7dc08e4b339c093e235f52b6';
+String _$imageFileHash() => r'f6166db11721b8a7a762ac35be7a4aaeb3aaf8fa';
 
 /// See also [ImageFile].
 @ProviderFor(ImageFile)

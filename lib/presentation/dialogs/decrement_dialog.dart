@@ -15,6 +15,7 @@ class DecrementDialog extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final valueController = useTextEditingController();
+    FirebaseService fireServise = FirebaseService();
 
     return Container(
       decoration: BoxDecoration(
@@ -73,49 +74,52 @@ class DecrementDialog extends HookConsumerWidget {
                     style: TextStyle(color: Colors.white, fontSize: 18)),
                 onPressed: () async {
                   final decrementValue = int.parse(valueController.text);
-                  FirebaseService firebaseService = FirebaseService();
+                  Map<String, dynamic>? data =
+                      await fireServise.fetchProductData(docName);
 
-                  final String currentValue = await firebaseService.fetchData(
-                          docName, "productVolume") ??
-                      "0";
-
+                  final int currentValue = data!['productVolume'];
+                  debugPrint(currentValue.toString());
                   if (valueController.text.isEmpty) {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            backgroundColor:
-                                const Color.fromARGB(255, 255, 200, 200),
-                            title: const Text('数量を入力してください',
-                                style: TextStyle(fontSize: 20)),
-                            actions: [
-                              TextButton(
-                                child: const Text("OK",
-                                    style: TextStyle(fontSize: 20.0)),
-                                onPressed: () => Navigator.pop(context),
-                              ),
-                            ],
-                          );
-                        });
-                  } else if (int.parse(currentValue) >=
-                      int.parse(valueController.text)) {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            backgroundColor: Color.fromARGB(255, 255, 200, 200),
-                            title: const Text('在庫不足です',
-                                style: TextStyle(fontSize: 20)),
-                            content: Text('在庫数は $currentValue です'),
-                            actions: [
-                              TextButton(
-                                child: const Text("OK",
-                                    style: TextStyle(fontSize: 20.0)),
-                                onPressed: () => Navigator.pop(context),
-                              ),
-                            ],
-                          );
-                        });
+                    if (context.mounted) {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 255, 200, 200),
+                              title: const Text('数量を入力してください',
+                                  style: TextStyle(fontSize: 20)),
+                              actions: [
+                                TextButton(
+                                  child: const Text("OK",
+                                      style: TextStyle(fontSize: 20.0)),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                              ],
+                            );
+                          });
+                    }
+                  } else if (currentValue <= int.parse(valueController.text)) {
+                    if (context.mounted) {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              backgroundColor:
+                                  Color.fromARGB(255, 255, 200, 200),
+                              title: const Text('在庫不足です',
+                                  style: TextStyle(fontSize: 20)),
+                              content: Text('在庫数は $currentValue です'),
+                              actions: [
+                                TextButton(
+                                  child: const Text("OK",
+                                      style: TextStyle(fontSize: 20.0)),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                              ],
+                            );
+                          });
+                    }
                   } else {
                     ref.read(loadingStateProvider.notifier).show();
 
