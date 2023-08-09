@@ -66,7 +66,7 @@ class StockPage extends ConsumerWidget {
         onPressed: () {
           return context.go('/productRegistration');
         },
-        backgroundColor: const Color.fromARGB(255, 103, 103, 103),
+        backgroundColor: Color.fromARGB(255, 16, 128, 159),
         elevation: 5.0,
         label: BoldText(
           text: '商品登録',
