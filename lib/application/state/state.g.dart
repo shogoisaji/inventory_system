@@ -218,4 +218,21 @@ final imageFileProvider =
 );
 
 typedef _$ImageFile = AutoDisposeNotifier<File?>;
+String _$absorbPointerStateHash() =>
+    r'200bbfc03fdd807b12dcef29451b96ec38bf7769';
+
+/// See also [AbsorbPointerState].
+@ProviderFor(AbsorbPointerState)
+final absorbPointerStateProvider =
+    AutoDisposeNotifierProvider<AbsorbPointerState, bool>.internal(
+  AbsorbPointerState.new,
+  name: r'absorbPointerStateProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$absorbPointerStateHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$AbsorbPointerState = AutoDisposeNotifier<bool>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

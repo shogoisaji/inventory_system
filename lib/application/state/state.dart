@@ -156,6 +156,15 @@ String? userName(UserNameRef ref) {
   );
 }
 
+// AbsorbPointerState
+@riverpod
+class AbsorbPointerState extends _$AbsorbPointerState {
+  @override
+  bool build() => false;
+
+  void set(bool bool) => state = bool;
+}
+
 /// ---------------------------------------------------------
 /// ユーザーIDを使えるスコープ    >> router/user_id_scope.dart
 /// ---------------------------------------------------------
