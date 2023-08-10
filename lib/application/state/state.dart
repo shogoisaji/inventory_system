@@ -19,26 +19,6 @@ class ProductDocument extends _$ProductDocument {
   void changeDocument(String product) => state = product;
 }
 
-// /// productData
-// @riverpod
-// Stream<DocumentSnapshot<Object>?> productFieldData(ProductFieldDataRef ref) {
-//   final productDocs = ref.watch(productDocumentProvider);
-//   final productRef =
-//       FirebaseFirestore.instance.collection('items').doc(productDocs);
-//   return productRef.snapshots();
-// }
-
-// /// productSnapshot
-// @riverpod
-// DocumentSnapshot<Object?>? productSnapshot(ProductSnapshotRef ref) {
-//   final snapshot = ref.watch(productFieldDataProvider);
-//   return snapshot.when(
-//     loading: () => null,
-//     error: (_, __) => null,
-//     data: (d) => d,
-//   );
-// }
-
 // IncrementDialog
 @riverpod
 class IncrementDialogState extends _$IncrementDialogState {
@@ -88,6 +68,7 @@ class StockType extends _$StockType {
   void changeType(int index) => state = index;
 }
 
+// imageFileを格納
 @riverpod
 class ImageFile extends _$ImageFile {
   @override
@@ -98,18 +79,13 @@ class ImageFile extends _$ImageFile {
   }
 }
 
-///
-/// FirebaseのユーザーをAsyncValue型で管理するプロバイダー
-///
+// FirebaseのユーザーをAsyncValue型で管理するプロバイダー
 @riverpod
 Stream<User?> userChanges(UserChangesRef ref) {
-  // Firebaseからユーザーの変化を教えてもらう
   return FirebaseAuth.instance.authStateChanges();
 }
 
-///
-/// ユーザー
-///
+// ユーザー
 @riverpod
 User? user(UserRef ref) {
   final userChanges = ref.watch(userChangesProvider);
@@ -120,24 +96,20 @@ User? user(UserRef ref) {
   );
 }
 
-///
-/// サインイン中かどうか
-///
+// サインイン中かどうか
 @riverpod
 bool signedIn(SignedInRef ref) {
   final user = ref.watch(userProvider);
   return user != null;
 }
 
-///
-/// ユーザーID
-///
+// ユーザーID
 @riverpod
 String userId(UserIdRef ref) {
   throw 'スコープ内の画面でしか使えません';
 }
 
-/// ユーザー名
+// ユーザーdata Firestore
 @riverpod
 Stream<DocumentSnapshot> userData(UserDataRef ref) {
   final user = ref.watch(userProvider);
@@ -146,6 +118,7 @@ Stream<DocumentSnapshot> userData(UserDataRef ref) {
   return userRef.snapshots();
 }
 
+// ユーザー名
 @riverpod
 String? userName(UserNameRef ref) {
   final userData = ref.watch(userDataProvider);

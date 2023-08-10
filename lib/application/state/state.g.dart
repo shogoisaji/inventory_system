@@ -8,11 +8,7 @@ part of 'state.dart';
 
 String _$userChangesHash() => r'4b418a07a9bb38d37b0f5fe2676bb7f58267eaeb';
 
-///
-/// FirebaseのユーザーをAsyncValue型で管理するプロバイダー
-///
-///
-/// Copied from [userChanges].
+/// See also [userChanges].
 @ProviderFor(userChanges)
 final userChangesProvider = AutoDisposeStreamProvider<User?>.internal(
   userChanges,
@@ -26,11 +22,7 @@ final userChangesProvider = AutoDisposeStreamProvider<User?>.internal(
 typedef UserChangesRef = AutoDisposeStreamProviderRef<User?>;
 String _$userHash() => r'3cc9ecd667fcb1fd39e74d498ecab726c98cf46a';
 
-///
-/// ユーザー
-///
-///
-/// Copied from [user].
+/// See also [user].
 @ProviderFor(user)
 final userProvider = AutoDisposeProvider<User?>.internal(
   user,
@@ -44,11 +36,7 @@ final userProvider = AutoDisposeProvider<User?>.internal(
 typedef UserRef = AutoDisposeProviderRef<User?>;
 String _$signedInHash() => r'ad977544c865550a5f87cfb21ad0a59169bcdd7b';
 
-///
-/// サインイン中かどうか
-///
-///
-/// Copied from [signedIn].
+/// See also [signedIn].
 @ProviderFor(signedIn)
 final signedInProvider = AutoDisposeProvider<bool>.internal(
   signedIn,
@@ -62,11 +50,7 @@ final signedInProvider = AutoDisposeProvider<bool>.internal(
 typedef SignedInRef = AutoDisposeProviderRef<bool>;
 String _$userIdHash() => r'b04b6e432625c4a9d6c9643e7f6182a7c53ec8c2';
 
-///
-/// ユーザーID
-///
-///
-/// Copied from [userId].
+/// See also [userId].
 @ProviderFor(userId)
 final userIdProvider = AutoDisposeProvider<String>.internal(
   userId,
@@ -80,9 +64,7 @@ final userIdProvider = AutoDisposeProvider<String>.internal(
 typedef UserIdRef = AutoDisposeProviderRef<String>;
 String _$userDataHash() => r'3e1ea1559ef4293bed2c29c5a99d296cd026f89e';
 
-/// ユーザー名
-///
-/// Copied from [userData].
+/// See also [userData].
 @ProviderFor(userData)
 final userDataProvider =
     AutoDisposeStreamProvider<DocumentSnapshot<Object?>>.internal(

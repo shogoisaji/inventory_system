@@ -18,8 +18,6 @@ class PagePath {
   static const stock = '/stock';
   static const account = '/account';
   static const detail = '/detail';
-  ////////////test
-  static const test = '/test';
 }
 
 @riverpod

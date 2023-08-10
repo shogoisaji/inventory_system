@@ -78,7 +78,7 @@ class FirebaseService {
       await FirebaseFirestore.instance.collection('items').doc(doc).delete();
       return "'$doc'を削除しました";
     } catch (error) {
-      return "Error: $error";
+      return "Error";
     }
   }
 

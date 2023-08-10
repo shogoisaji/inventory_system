@@ -235,10 +235,38 @@ class DetailPage extends HookConsumerWidget {
                                                                     docName);
                                                         debugPrint(
                                                             deleteComment);
-                                                        if (context.mounted) {
+                                                        if (context.mounted &&
+                                                            deleteComment !=
+                                                                "Error") {
+                                                          debugPrint(
+                                                              deleteComment);
                                                           context.go('/stock');
                                                           Navigator.of(context)
                                                               .pop();
+                                                        } else {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            const SnackBar(
+                                                              backgroundColor:
+                                                                  Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          181,
+                                                                          0,
+                                                                          0),
+                                                              content: Center(
+                                                                child: Text(
+                                                                  '       ＜削除失敗＞\n権限を確認してください',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          20),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          );
                                                         }
                                                       },
                                                     ),
